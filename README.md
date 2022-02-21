@@ -1,3 +1,17 @@
+# Instructions
+
+1. Clone this repository
+2. npm install
+3. nx serve example-app
+
+# Play game online:
+https://ben-kn-app.github.io/Monster-Factory/ 
+
+We used the below template to start:
+
+# Trello Board:
+https://trello.com/b/6bKl4N4i/monster-factory 
+
 # OpenForge Ionic Monorepo Example
 
 This is a template project for all you aspiring video game developers out there!   Want to use your web application skills for creating an awesome video game? 
