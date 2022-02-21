@@ -1,5 +1,5 @@
 /* eslint-disable no-magic-numbers */
-import { PhaserSingletonService } from '@company-name/example-app/phaser/singleton';
+import { PhaserSingletonService } from '@knapp/monster-factory/phaser/singleton';
 import * as Phaser from 'phaser';
 
 import { SwordTypeEnum } from '../enums/sword.enum';

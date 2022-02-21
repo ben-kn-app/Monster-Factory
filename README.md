@@ -2,7 +2,7 @@
 
 1. Clone this repository
 2. npm install
-3. nx serve example-app
+3. nx serve monster-factory
 
 # Play game online:
 https://ben-kn-app.github.io/Monster-Factory/ 
@@ -12,27 +12,7 @@ We used the below template to start:
 # Trello Board:
 https://trello.com/b/6bKl4N4i/monster-factory 
 
-# OpenForge Ionic Monorepo Example
-
-This is a template project for all you aspiring video game developers out there!   Want to use your web application skills for creating an awesome video game? 
-
-This repository will give you a great starting point! 
-
-# Instructions
-
-1. Clone the repository using 'Use template' (and don't forget to give us a Star / Follow on Github, please!)
-2. Search + Replace all instances of 'example-app-e2e' with your app name (important to do this first)
-3. Search + Replace all instances of 'example-app' with your app name
-4. Change the folder names for example-app and example-app-e2e to what you named for steps #1 and #2
-5. Search + Replace all instances of 'openforge-ionic-monorepo-example' with your project name
-6. Search + Replace 'company-name' with your company name.  This is the NX project scope that allows you to import libraries using @company-name
-
-That's it for the renaming!  Now to test...
-
-7. npm install
-8. npx nx run example-app:serve (where example-app is the name you replaced with above)
-
-You should now load your example app!
+# Credits to OpenForge Ionic Monorepo Example
 
 # Important - Utilizing this Repo
 
@@ -64,11 +44,11 @@ Run `nx g @nrwl/react:lib my-lib` to generate a library.
 
 > You can also use any of the plugins above to generate libraries as well.
 
-Libraries are shareable across libraries and applications. They can be imported from `@openforge-ionic-monorepo-example/mylib`.
+Libraries are shareable across libraries and applications. They can be imported from `@com.knapp.monsterfactory/mylib`.
 
 ## Development server
 
-Run `npx nx run example-app:serve` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
+Run `npx nx run monster-factory:serve` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
 
 ## Code scaffolding
 

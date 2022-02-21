@@ -1,0 +1,28 @@
+{
+  "projectType": "library",
+  "root": "libs/monster-factory/phaser/singleton",
+  "sourceRoot": "libs/monster-factory/phaser/singleton/src",
+  "prefix": "knapp",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": [
+        "coverage/libs/monster-factory/phaser/singleton"
+      ],
+      "options": {
+        "jestConfig": "libs/monster-factory/phaser/singleton/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/monster-factory/phaser/singleton/src/**/*.ts",
+          "libs/monster-factory/phaser/singleton/src/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

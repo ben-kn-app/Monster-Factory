@@ -1,0 +1,28 @@
+{
+  "projectType": "library",
+  "root": "libs/monster-factory/ionic/ui-buttons",
+  "sourceRoot": "libs/monster-factory/ionic/ui-buttons/src",
+  "prefix": "knapp",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": [
+        "coverage/libs/monster-factory/ionic/ui-buttons"
+      ],
+      "options": {
+        "jestConfig": "libs/monster-factory/ionic/ui-buttons/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/monster-factory/ionic/ui-buttons/src/**/*.ts",
+          "libs/monster-factory/ionic/ui-buttons/src/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

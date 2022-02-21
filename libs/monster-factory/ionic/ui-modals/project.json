@@ -1,0 +1,28 @@
+{
+  "projectType": "library",
+  "root": "libs/monster-factory/ionic/ui-modals",
+  "sourceRoot": "libs/monster-factory/ionic/ui-modals/src",
+  "prefix": "knapp",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": [
+        "coverage/libs/monster-factory/ionic/ui-modals"
+      ],
+      "options": {
+        "jestConfig": "libs/monster-factory/ionic/ui-modals/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/monster-factory/ionic/ui-modals/src/**/*.ts",
+          "libs/monster-factory/ionic/ui-modals/src/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

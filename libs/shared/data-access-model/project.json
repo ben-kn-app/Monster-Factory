@@ -2,7 +2,7 @@
   "projectType": "library",
   "root": "libs/shared/data-access-model",
   "sourceRoot": "libs/shared/data-access-model/src",
-  "prefix": "company-name",
+  "prefix": "knapp",
   "targets": {
     "test": {
       "executor": "@nrwl/jest:jest",
