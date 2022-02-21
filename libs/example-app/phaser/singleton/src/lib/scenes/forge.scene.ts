@@ -22,7 +22,7 @@ export class ForgeScene extends Phaser.Scene {
         try {
             console.log('forge.scene.ts', 'Preloading Assets...');
             // * First, set the base URL since we're just loading from the main application's asset folder
-            this.load.setBaseURL('http://localhost:4200/');
+            // this.load.setBaseURL('http://localhost:4200/');
 
             // * Now load the background image
             this.load.image(this.backgroundKey, this.backgroundImageAsset);
