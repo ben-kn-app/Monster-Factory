@@ -38,12 +38,6 @@ export class LevelScene extends AbstractScene {
         }
     }
 
-    getRandomInt(max, min = 0) {
-        min = Math.ceil(min);
-        max = Math.floor(max);
-        return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
-    }
-
     /**
      * * Phaser will only call create after all assets in Preload have been loaded
      */
@@ -57,8 +51,11 @@ export class LevelScene extends AbstractScene {
             try {
                 const { width, height } = this.sys.game.canvas;
 
-                const randomWidth = this.getRandomInt(width);
-                const randomHeight = this.getRandomInt(height);
+                const randomWidth = General.getRandomInt(width);
+                const randomHeight = General.getRandomInt(height);
+
+                // Seems to be a bug here, as the images are too 'bundled', don't know what yet.
+                General.debugLog(width, height, randomWidth, randomHeight);
 
                 const image = this.add.image(randomWidth, randomHeight, clickableObject.name || clickableObject.path);
 
