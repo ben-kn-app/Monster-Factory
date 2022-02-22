@@ -4,6 +4,7 @@ import { CheapSword } from 'libs/shared/data-access-model/src/lib/sword/cheap_sw
 import { FancySword } from 'libs/shared/data-access-model/src/lib/sword/fancy_sword.class';
 import * as Phaser from 'phaser';
 
+import { General } from '../utilities/general';
 import { ScrollManager } from '../utilities/scroll-manager';
 
 export class ForgeScene extends Phaser.Scene {
@@ -20,7 +21,7 @@ export class ForgeScene extends Phaser.Scene {
 
     async preload() {
         try {
-            console.log('forge.scene.ts', 'Preloading Assets...');
+            General.debugLog('forge.scene.ts', 'Preloading Assets...');
             // * First, set the base URL since we're just loading from the main application's asset folder
             // this.load.setBaseURL('http://localhost:4200/');
 
@@ -49,7 +50,7 @@ export class ForgeScene extends Phaser.Scene {
      * * Phaser will only call create after all assets in Preload have been loaded
      */
     async create() {
-        console.log('forge.scene.ts', 'Creating Assets...', this.scale.width, this.scale.height);
+        General.debugLog('forge.scene.ts', 'Creating Assets...', this.scale.width, this.scale.height);
 
         // * Setup the Background Image
         this.backgroundImage = this.add.image(0, 0, this.backgroundKey);
@@ -78,7 +79,7 @@ export class ForgeScene extends Phaser.Scene {
      * @param gameSize
      */
     resize(gameSize: Phaser.Structs.Size) {
-        console.log('Resizing', gameSize.width, gameSize.height);
+        General.debugLog('Resizing', gameSize.width, gameSize.height);
         this.cameras.resize(gameSize.width, gameSize.height);
     }
 }

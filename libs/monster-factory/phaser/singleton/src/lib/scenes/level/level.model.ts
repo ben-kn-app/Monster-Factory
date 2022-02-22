@@ -10,4 +10,6 @@ export interface Level {
 
 export interface ClickableObject {
     path: string;
+    name?: string; // Optional, internal UNIQUE reference to the clickable object, if this is unset, the path will be used.
+    flipX?: boolean; // Default false, if true, the image will be flipped horizontally.
 }

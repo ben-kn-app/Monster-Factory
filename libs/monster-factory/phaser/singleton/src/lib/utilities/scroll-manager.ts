@@ -1,6 +1,8 @@
 /* eslint-disable no-magic-numbers */
 import * as Phaser from 'phaser';
 
+import { General } from './general';
+
 type BackgroundImage = Phaser.GameObjects.GameObject & Phaser.GameObjects.Components.ComputedSize;
 type PanningTarget = Phaser.GameObjects.GameObject & Phaser.GameObjects.Components.Transform;
 
@@ -24,7 +26,7 @@ export class ScrollManager {
     private panningTarget: PanningTarget;
 
     constructor(scene: Phaser.Scene) {
-        console.log('scroll-manager.ts', 'Constructor for ScrollManager');
+        General.debugLog('scroll-manager.ts', 'Constructor for ScrollManager');
         this.scene = scene;
         this.scene.events.on(Phaser.Scenes.Events.CREATE, this.create, this);
         this.scene.events.on(Phaser.Scenes.Events.UPDATE, this.update, this);
@@ -63,7 +65,7 @@ export class ScrollManager {
      * @param object the image background to size the scrolling to and attach drag listeners to.
      */
     public registerScrollingBackground(object: BackgroundImage) {
-        console.log('registerScrollingBackground', object);
+        General.debugLog('registerScrollingBackground', object);
         this.backgroundImage = object;
         this.applyScrollingHandlers(object);
     }
@@ -112,14 +114,14 @@ export class ScrollManager {
         this.nextScrollX = this.startingPositionX;
         this.nextScrollY = this.startingPositionY;
         this.scene.cameras.main.setScroll(this.nextScrollX, this.nextScrollY);
-        console.log('scroll-manager.ts', 'create() - Finished');
+        General.debugLog('scroll-manager.ts', 'create() - Finished');
     }
 
     /**
      * * Required phaser lifecycle event, happens every tick.
      */
     private update() {
-        // ---> Noisy log console.log('scroll-manager.ts', 'update');
+        // ---> Noisy log General.debugLog('scroll-manager.ts', 'update');
         this.scene.cameras.main.setScroll(this.nextScrollX, this.nextScrollY);
         if (this.panningTarget) {
             const { x: pointerX, y: pointerY } = this.scene.input.activePointer;

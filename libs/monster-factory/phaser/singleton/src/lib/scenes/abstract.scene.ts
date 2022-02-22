@@ -1,5 +1,7 @@
 import * as Phaser from 'phaser';
 
+import { General } from '../utilities/general';
+
 export abstract class AbstractScene extends Phaser.Scene {
     constructor(key: string) {
         // Config
@@ -15,7 +17,7 @@ export abstract class AbstractScene extends Phaser.Scene {
      * @param gameSize
      */
     resize(gameSize: Phaser.Structs.Size) {
-        console.log('Resizing', gameSize.width, gameSize.height);
+        General.debugLog('Resizing', gameSize.width, gameSize.height);
         this.cameras.resize(gameSize.width, gameSize.height);
     }
 }
