@@ -9,10 +9,10 @@
             </ion-header>
             <ion-content>
                 <ion-list>
-                    <ion-item><ion-button [routerLink]="['/home']">Go to Home Page</ion-button></ion-item>
+                    <ion-item><ion-button (click)="restartGame()">Restart</ion-button></ion-item>
+                   <!--  <ion-item><ion-button [routerLink]="['/home']">Go to Home Page</ion-button></ion-item>
                     <ion-item><ion-button (click)="openShop()">Open Shop Modal</ion-button></ion-item>
-                    <ion-item><ion-button [routerLink]="['/shop']">Go to Shop Page</ion-button></ion-item>
-                    
+                    <ion-item><ion-button [routerLink]="['/shop']">Go to Shop Page</ion-button></ion-item> -->
                 </ion-list>
                 <div *ngFor="let action of actionsHistoryRef">
                     <p> - {{action}}</p>

@@ -108,9 +108,11 @@ export class LevelScene extends AbstractScene {
      */
     clickedOnObjects(objectsClicked: Phaser.GameObjects.GameObject[]) {
         General.debugLog(objectsClicked);
+
         if (!objectsClicked || objectsClicked.length === 0) {
             return this.cameras.main.fadeFrom(this.FADE_ANIMATION, 150, 0, 0);
         }
+
         objectsClicked.forEach(objectClicked => {
             this.cameras.main.fadeFrom(this.FADE_ANIMATION, 0, 150, 0);
             objectClicked.destroy();

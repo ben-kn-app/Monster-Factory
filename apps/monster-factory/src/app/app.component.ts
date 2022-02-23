@@ -30,4 +30,8 @@ export class AppComponent implements OnDestroy {
     ngOnDestroy(): void {
         PhaserSingletonService.destroyActiveGame();
     }
+
+    restartGame() {
+        PhaserSingletonService.restart();
+    }
 }

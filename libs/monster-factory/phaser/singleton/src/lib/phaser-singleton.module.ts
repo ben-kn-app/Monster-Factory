@@ -56,6 +56,15 @@ export class PhaserSingletonService {
     }
 
     /**
+     * Restarts a scene
+     */
+    public static restart() {
+        if (PhaserSingletonService.activeGame) {
+            PhaserSingletonService.activeGame.scene.getScene('level').scene.restart();
+        }
+    }
+
+    /**
      * * Initializes the active Phaser.Game
      * * The Phaser.Game instance owns Scene Manager, Texture Manager, Animations FrameHandler, and Device Class as GLOBALS
      * * The Scene Manager owns the individual Scenes and is accessed by activeGame.scene
@@ -82,7 +91,7 @@ export class PhaserSingletonService {
                         autoCenter: Phaser.Scale.CENTER_BOTH,
                         height: window.innerHeight,
                     },
-                    parent: 'forge-main',
+                    parent: 'monster-factory-main',
                     scene: [LevelScene],
                     plugins: {
                         global: [],
