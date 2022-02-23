@@ -16,7 +16,30 @@ export class LevelScene extends AbstractScene {
     private level: Level = {
         assetsPrefix: 'assets/level_monster_factory/',
         background: 'blacksmith_bg.png',
-        clickableObjects: [{ path: 'monster1.png' }, { path: 'monster2.png' }, { path: 'monster1.png', flipX: true }, { path: 'monster2.png', flipX: true }],
+        clickableObjects: [
+            { path: 'monstera1.svg' },
+            { path: 'monstera2.svg' },
+            { path: 'monstera3.svg' },
+            { path: 'monstera4.svg' },
+            { path: 'monstera5.svg' },
+            { path: 'monstera6.svg' },
+            { path: 'monsterb1.svg' },
+            { path: 'monsterb2.svg' },
+            { path: 'monsterb3.svg' },
+            { path: 'monsterb4.svg' },
+            { path: 'monsterb5.svg' },
+            { path: 'monsterb6.svg' },
+            { path: 'monsterb7svg' },
+            { path: 'monsterb8.svg' },
+            { path: 'monsterc1.svg' },
+            { path: 'monsterc2.svg' },
+            { path: 'monsterc3.svg' },
+            { path: 'monsterc4.svg' },
+            { path: 'monsterc5.svg' },
+            { path: 'monsterc6.svg' },
+            // { path: 'monster1.png', flipX: true },
+            // { path: 'monster2.png', flipX: true }
+        ],
     };
 
     constructor() {
@@ -55,10 +78,22 @@ export class LevelScene extends AbstractScene {
         // reset available object
         this.availableClickableObjects = [];
 
+        // * Register our custom scroll manager
+        // this.scrollManager = new ScrollManager(this);
+        // this.scrollManager.registerScrollingBackground(this.backgroundImage);
+        // * Set cameras to the correct position
+        const ZOOM = 0.25;
+        // const ZOOM = 1;
+        this.cameras.main.setZoom(ZOOM);
+        //this.scrollManager.scrollToCenter();
+
+        this.scale.on('resize', this.resize, this);
+
         this.level.clickableObjects.forEach(clickableObject => {
             try {
                 const { width, height } = this.sys.game.canvas;
-
+                // width = width * (1/ ZOOM);
+                // height = height * (1/ ZOOM);
                 const randomWidth = General.getRandomInt(width);
                 const randomHeight = General.getRandomInt(height);
 
@@ -67,7 +102,7 @@ export class LevelScene extends AbstractScene {
 
                 const image = this.add.image(randomWidth, randomHeight, clickableObject.name || clickableObject.path);
 
-                image.setScale(1);
+                image.setScale(0.5);
 
                 if (clickableObject.flipX) {
                     image.toggleFlipX();
@@ -98,17 +133,6 @@ export class LevelScene extends AbstractScene {
 
         // * Now handle scrolling
         this.cameras.main.setBackgroundColor('0xEBF0F3');
-
-        // * Register our custom scroll manager
-        // this.scrollManager = new ScrollManager(this);
-        // this.scrollManager.registerScrollingBackground(this.backgroundImage);
-        // * Set cameras to the correct position
-        // const ZOOM = 0.25;
-        const ZOOM = 1;
-        this.cameras.main.setZoom(ZOOM);
-        //this.scrollManager.scrollToCenter();
-
-        this.scale.on('resize', this.resize, this);
 
         // Set initial object to find
         // This will be updated everytime the user correctly searches for the object
