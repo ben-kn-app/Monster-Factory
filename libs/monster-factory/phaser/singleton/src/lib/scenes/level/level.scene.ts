@@ -15,7 +15,7 @@ export class LevelScene extends AbstractScene {
 
     private level: Level = {
         assetsPrefix: 'assets/level_monster_factory/',
-        background: 'blacksmith_bg.png',
+        background: 'background.jpg',
         clickableObjects: [
             { path: 'monstera1.svg' },
             { path: 'monstera2.svg' },
@@ -29,7 +29,7 @@ export class LevelScene extends AbstractScene {
             { path: 'monsterb4.svg' },
             { path: 'monsterb5.svg' },
             { path: 'monsterb6.svg' },
-            { path: 'monsterb7svg' },
+            { path: 'monsterb7.svg' },
             { path: 'monsterb8.svg' },
             { path: 'monsterc1.svg' },
             { path: 'monsterc2.svg' },
@@ -73,7 +73,7 @@ export class LevelScene extends AbstractScene {
         General.debugLog('level.scene.ts', 'Creating Assets...', this.scale.width, this.scale.height);
 
         // * Setup the Background Image
-        this.BACKGROUND_IMAGE = this.add.image(0, 0, this.BACKGROUND_KEY);
+        this.BACKGROUND_IMAGE = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, this.BACKGROUND_KEY);
 
         // reset available object
         this.availableClickableObjects = [];
@@ -82,7 +82,7 @@ export class LevelScene extends AbstractScene {
         // this.scrollManager = new ScrollManager(this);
         // this.scrollManager.registerScrollingBackground(this.backgroundImage);
         // * Set cameras to the correct position
-        const ZOOM = 0.25;
+        const ZOOM = 0.5;
         // const ZOOM = 1;
         this.cameras.main.setZoom(ZOOM);
         //this.scrollManager.scrollToCenter();
@@ -91,9 +91,9 @@ export class LevelScene extends AbstractScene {
 
         this.level.clickableObjects.forEach(clickableObject => {
             try {
-                const { width, height } = this.sys.game.canvas;
-                // width = width * (1/ ZOOM);
-                // height = height * (1/ ZOOM);
+                let { width, height } = this.sys.game.canvas;
+                width = width * (1 + ZOOM);
+                height = height * (1 + ZOOM);
                 const randomWidth = General.getRandomInt(width);
                 const randomHeight = General.getRandomInt(height);
 
@@ -102,7 +102,7 @@ export class LevelScene extends AbstractScene {
 
                 const image = this.add.image(randomWidth, randomHeight, clickableObject.name || clickableObject.path);
 
-                image.setScale(0.5);
+                image.setScale(0.25);
 
                 if (clickableObject.flipX) {
                     image.toggleFlipX();
