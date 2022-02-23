@@ -22,6 +22,7 @@ export class PhaserSingletonService {
     private static ngZone: NgZone;
     public static actionsHistory: string[] = []; // * Since phaser is a singleton, let's store the history of actions here for all components.
     public static shopObservable: Subject<SwordTypeEnum> = new Subject<SwordTypeEnum>();
+    public static findObjectObservable: Subject<any> = new Subject();
 
     constructor(private _ngZone: NgZone, @Optional() @SkipSelf() parentModule?: PhaserSingletonService) {
         if (parentModule) {

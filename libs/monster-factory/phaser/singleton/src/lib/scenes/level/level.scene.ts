@@ -1,21 +1,22 @@
 // import * as Phaser from 'phaser';
 
+import { PhaserSingletonService } from '../../phaser-singleton.module';
 import { General } from '../../utilities/general';
 import { AbstractScene } from '../abstract.scene';
-import { Level } from './level.model';
+import { AvailableClickableObject, Level } from './level.model';
 
 export class LevelScene extends AbstractScene {
     private BACKGROUND_KEY: string = 'level_background';
     private BACKGROUND_IMAGE; // Is used in create();
     private FADE_ANIMATION = 300;
 
-    private availableClickableObjects;
-    private objectToFind;
+    private availableClickableObjects: AvailableClickableObject[];
+    private objectToFind: AvailableClickableObject;
 
     private level: Level = {
         assetsPrefix: 'assets/level_monster_factory/',
         background: 'blacksmith_bg.png',
-        clickableObjects: [{ path: 'monster1.png' }, { path: 'monster2.png' }, { path: 'monster1.png' }, { path: 'monster2.png', flipX: true }],
+        clickableObjects: [{ path: 'monster1.png' }, { path: 'monster2.png' }, { path: 'monster1.png', flipX: true }, { path: 'monster2.png', flipX: true }],
     };
 
     constructor() {
@@ -77,7 +78,7 @@ export class LevelScene extends AbstractScene {
 
                 // Add image to available objects, so we can later search or delete them.
                 // Without affecting the core level clickable objects
-                this.availableClickableObjects.push(image);
+                this.availableClickableObjects.push({ go: image, clickableObject, path: this.level.assetsPrefix + clickableObject.path });
 
                 //  Enables all kind of input actions on this image (click, etc)
                 // image.inputEnabled = true;
@@ -117,6 +118,9 @@ export class LevelScene extends AbstractScene {
     setNewObjectToFind() {
         // Take a random object
         this.objectToFind = this.availableClickableObjects[Math.floor(Math.random() * this.availableClickableObjects.length)];
+
+        // Pass it to ui
+        PhaserSingletonService.findObjectObservable.next(this.objectToFind);
     }
 
     /**
@@ -135,10 +139,8 @@ export class LevelScene extends AbstractScene {
         let foundObject = false;
 
         objectsClicked.forEach((objectClicked: Phaser.GameObjects.Image) => {
-            console.log(objectClicked, this.objectToFind);
-
             // If the object clicked is the same as the player is looking for, the player has found it.
-            if (this.isObjectEqual(objectClicked, this.objectToFind)) {
+            if (this.isObjectEqual(objectClicked, this.objectToFind.go)) {
                 this.showObjectFoundAnimation();
                 this.removeFoundObject(objectClicked);
                 this.setNewObjectToFind();
@@ -184,14 +186,7 @@ export class LevelScene extends AbstractScene {
      * -1 if not found.
      */
     getIndexOfAvailableObject(object: Phaser.GameObjects.Image) {
-        for (const clickableObjectIndex in this.availableClickableObjects) {
-            if (this.isObjectEqual(this.availableClickableObjects[clickableObjectIndex], object)) {
-                return clickableObjectIndex;
-            }
-        }
-
-        // If we get here the index is not found
-        return -1;
+        return this.availableClickableObjects.findIndex(availableClickableObject => this.isObjectEqual(availableClickableObject.go, object));
     }
 
     /**

@@ -146,7 +146,7 @@
               ],
               "no-underscore-dangle": "off",
               "import/no-cycle": [
-                  "error",
+                  "warn",
                   {
                       "maxDepth": 10,
                       "ignoreExternal": true
