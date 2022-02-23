@@ -7,6 +7,7 @@ import { Level } from './level.model';
 export class LevelScene extends AbstractScene {
     private BACKGROUND_KEY: string = 'level_background';
     private BACKGROUND_IMAGE;
+    private that;
 
     private level: Level = {
         assetsPrefix: 'assets/level_monster_factory/',
@@ -17,9 +18,12 @@ export class LevelScene extends AbstractScene {
     constructor() {
         // Config
         super('level');
+        this.that = this;
     }
 
     async preload() {
+        console.log('preload context', this);
+        console.log('preload context', this.that);
         try {
             General.debugLog('level.scene.ts', 'Preloading Assets...');
 
@@ -82,9 +86,7 @@ export class LevelScene extends AbstractScene {
         // Handle click events
         this.input
             .setTopOnly(false) // If you want to check if more than the top most hitbox was clicked
-            .on('pointerdown', (pointer: Phaser.Input.Pointer, objectsClicked: Phaser.GameObjects.GameObject[]) => {
-                console.log(objectsClicked);
-            });
+            .on('pointerdown', (pointer: Phaser.Input.Pointer, objectsClicked: Phaser.GameObjects.GameObject[]) => this.clickedOnObjects(objectsClicked));
 
         // * Now handle scrolling
         this.cameras.main.setBackgroundColor('0xEBF0F3');
@@ -99,5 +101,18 @@ export class LevelScene extends AbstractScene {
         //this.scrollManager.scrollToCenter();
 
         this.scale.on('resize', this.resize, this);
+    }
+
+    /**
+     * Function called when the user clicks on object(s).
+     * Will pass in multiple when they overlap.
+     *
+     * @param objectsClicked
+     */
+    private clickedOnObjects(objectsClicked: Phaser.GameObjects.GameObject[]) {
+        console.log(objectsClicked);
+        objectsClicked.forEach(objectClicked => {
+            objectClicked.destroy();
+        });
     }
 }
