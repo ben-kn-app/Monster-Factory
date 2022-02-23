@@ -9,6 +9,9 @@ export class LevelScene extends AbstractScene {
     private BACKGROUND_IMAGE; // Is used in create();
     private FADE_ANIMATION = 300;
 
+    private availableClickableObjects;
+    private objectToFind;
+
     private level: Level = {
         assetsPrefix: 'assets/level_monster_factory/',
         background: 'blacksmith_bg.png',
@@ -48,6 +51,9 @@ export class LevelScene extends AbstractScene {
         // * Setup the Background Image
         this.BACKGROUND_IMAGE = this.add.image(0, 0, this.BACKGROUND_KEY);
 
+        // reset available object
+        this.availableClickableObjects = [];
+
         this.level.clickableObjects.forEach(clickableObject => {
             try {
                 const { width, height } = this.sys.game.canvas;
@@ -68,6 +74,10 @@ export class LevelScene extends AbstractScene {
 
                 // To make the image clickable
                 image.setInteractive();
+
+                // Add image to available objects, so we can later search or delete them.
+                // Without affecting the core level clickable objects
+                this.availableClickableObjects.push(image);
 
                 //  Enables all kind of input actions on this image (click, etc)
                 // image.inputEnabled = true;
@@ -98,6 +108,15 @@ export class LevelScene extends AbstractScene {
         //this.scrollManager.scrollToCenter();
 
         this.scale.on('resize', this.resize, this);
+
+        // Set initial object to find
+        // This will be updated everytime the user correctly searches for the object
+        this.setNewObjectToFind();
+    }
+
+    setNewObjectToFind() {
+        // Take a random object
+        this.objectToFind = this.availableClickableObjects[Math.floor(Math.random() * this.availableClickableObjects.length)];
     }
 
     /**
@@ -110,12 +129,84 @@ export class LevelScene extends AbstractScene {
         General.debugLog(objectsClicked);
 
         if (!objectsClicked || objectsClicked.length === 0) {
-            return this.cameras.main.fadeFrom(this.FADE_ANIMATION, 150, 0, 0);
+            return this.showObjectMissClickAnimation();
         }
 
-        objectsClicked.forEach(objectClicked => {
-            this.cameras.main.fadeFrom(this.FADE_ANIMATION, 0, 150, 0);
-            objectClicked.destroy();
+        let foundObject = false;
+
+        objectsClicked.forEach((objectClicked: Phaser.GameObjects.Image) => {
+            console.log(objectClicked, this.objectToFind);
+
+            // If the object clicked is the same as the player is looking for, the player has found it.
+            if (this.isObjectEqual(objectClicked, this.objectToFind)) {
+                this.showObjectFoundAnimation();
+                this.removeFoundObject(objectClicked);
+                this.setNewObjectToFind();
+                foundObject = true;
+            }
         });
+
+        if (!foundObject) {
+            return this.showObjectMissClickAnimation();
+        }
+    }
+
+    /**
+     * Shows an animation when the user finds the right object
+     */
+    showObjectFoundAnimation() {
+        return this.cameras.main.fadeFrom(this.FADE_ANIMATION, 0, 150, 0);
+    }
+
+    /**
+     * Shows an animation when the user finds the right object
+     */
+    showObjectMissClickAnimation() {
+        return this.cameras.main.fadeFrom(this.FADE_ANIMATION, 150, 0, 0);
+    }
+
+    /**
+     * Boolean check if 2 objects are equal
+     *
+     * @param object1
+     * @param object2
+     */
+    isObjectEqual(object1: Phaser.GameObjects.Image, object2: Phaser.GameObjects.Image) {
+        // We check by positioning, but there must be a better way?
+        // TODO If we keep it this way, we need to make sure in create() to not spawn to images with the same position.
+        if (object1.x === object2.x && object1.y === object2.y) {
+            return true;
+        }
+        return false;
+    }
+    /**
+     * Returns index if the object is available
+     * -1 if not found.
+     */
+    getIndexOfAvailableObject(object: Phaser.GameObjects.Image) {
+        for (const clickableObjectIndex in this.availableClickableObjects) {
+            if (this.isObjectEqual(this.availableClickableObjects[clickableObjectIndex], object)) {
+                return clickableObjectIndex;
+            }
+        }
+
+        // If we get here the index is not found
+        return -1;
+    }
+
+    /**
+     * Remove object it from the level
+     *
+     * @param object
+     */
+    removeFoundObject(object: Phaser.GameObjects.Image) {
+        this.availableClickableObjects.splice(this.getIndexOfAvailableObject(object), 1);
+        General.debugLog('Removed Object new available objects', this.availableClickableObjects);
+        object.destroy();
+
+        // If no available objects are available we restart the level
+        if (this.availableClickableObjects.length === 0) {
+            this.scene.restart();
+        }
     }
 }
