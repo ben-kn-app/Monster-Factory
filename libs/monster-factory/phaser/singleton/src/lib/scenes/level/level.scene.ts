@@ -59,15 +59,32 @@ export class LevelScene extends AbstractScene {
 
                 const image = this.add.image(randomWidth, randomHeight, clickableObject.name || clickableObject.path);
 
-                image.setScale(3);
+                image.setScale(1);
 
                 if (clickableObject.flipX) {
                     image.toggleFlipX();
                 }
+
+                // To make the image clickable
+                image.setInteractive();
+
+                //  Enables all kind of input actions on this image (click, etc)
+                // image.inputEnabled = true;
+
+                // text = game.add.text(250, 16, '', { fill: '#ffffff' });
+
+                // image.events.onInputDown.add(listener, this);
             } catch (error) {
                 console.error('Error adding image ' + clickableObject.path, error);
             }
         });
+
+        // Handle click events
+        this.input
+            .setTopOnly(false) // If you want to check if more than the top most hitbox was clicked
+            .on('pointerdown', (pointer: Phaser.Input.Pointer, objectsClicked: Phaser.GameObjects.GameObject[]) => {
+                console.log(objectsClicked);
+            });
 
         // * Now handle scrolling
         this.cameras.main.setBackgroundColor('0xEBF0F3');
@@ -76,7 +93,8 @@ export class LevelScene extends AbstractScene {
         // this.scrollManager = new ScrollManager(this);
         // this.scrollManager.registerScrollingBackground(this.backgroundImage);
         // * Set cameras to the correct position
-        const ZOOM = 0.25;
+        // const ZOOM = 0.25;
+        const ZOOM = 1;
         this.cameras.main.setZoom(ZOOM);
         //this.scrollManager.scrollToCenter();
 
