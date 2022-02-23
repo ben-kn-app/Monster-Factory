@@ -6,8 +6,8 @@ import { Level } from './level.model';
 
 export class LevelScene extends AbstractScene {
     private BACKGROUND_KEY: string = 'level_background';
-    private BACKGROUND_IMAGE;
-    private that;
+    private BACKGROUND_IMAGE; // Is used in create();
+    private FADE_ANIMATION = 300;
 
     private level: Level = {
         assetsPrefix: 'assets/level_monster_factory/',
@@ -18,12 +18,9 @@ export class LevelScene extends AbstractScene {
     constructor() {
         // Config
         super('level');
-        this.that = this;
     }
 
     async preload() {
-        console.log('preload context', this);
-        console.log('preload context', this.that);
         try {
             General.debugLog('level.scene.ts', 'Preloading Assets...');
 
@@ -109,9 +106,13 @@ export class LevelScene extends AbstractScene {
      *
      * @param objectsClicked
      */
-    private clickedOnObjects(objectsClicked: Phaser.GameObjects.GameObject[]) {
-        console.log(objectsClicked);
+    clickedOnObjects(objectsClicked: Phaser.GameObjects.GameObject[]) {
+        General.debugLog(objectsClicked);
+        if (!objectsClicked || objectsClicked.length === 0) {
+            return this.cameras.main.fadeFrom(this.FADE_ANIMATION, 150, 0, 0);
+        }
         objectsClicked.forEach(objectClicked => {
+            this.cameras.main.fadeFrom(this.FADE_ANIMATION, 0, 150, 0);
             objectClicked.destroy();
         });
     }
