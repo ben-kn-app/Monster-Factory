@@ -137,6 +137,10 @@ export class LevelScene extends AbstractScene {
                     duration: 300,
                 });
 
+                // Grow on mouse over. Only relevant in browser
+                image.on("pointerover", () => { image.scaleX = this.IMAGE_SCALE + 0.01; image.scaleY = this.IMAGE_SCALE + 0.01; });
+                image.on("pointerout", () => { image.scaleX = this.IMAGE_SCALE; image.scaleY = this.IMAGE_SCALE; });
+
                 if (clickableObject.flipX) {
                     image.toggleFlipX();
                 }
