@@ -5,7 +5,7 @@ import { PhaserSingletonService } from '@knapp/monster-factory/phaser/singleton'
 import { ShopPageComponent } from './shop/shop.component';
 
 @Component({
-    selector: 'openforge-app-root',
+    selector: 'knapp-app-root',
     templateUrl: 'app.component.html',
     styleUrls: ['app.component.scss'],
 })

@@ -25,6 +25,9 @@ jobs:
     - name: Build
       run: npm run build:prod
 
+    - name: Create 404 index
+      run: cp dist/apps/monster-factory/index.html dist/apps/monster-factory/404.html
+
     - name: Deploy
       if: success()
       uses: peaceiris/actions-gh-pages@v3
