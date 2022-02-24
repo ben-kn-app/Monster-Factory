@@ -88,7 +88,8 @@ export class LevelScene extends AbstractScene {
 
                 // Can we use random Y coordinates to spawn clickable objects or do we need to adhere to specific spawn points
                 if (this.level.spawnYAxis) {
-                    const randomIndex = Math.floor(Math.random() * this.level.spawnYAxis.length);
+                    const randomIndex = Phaser.Math.Between(0, this.level.spawnYAxis.length);
+                    // const randomIndex = Math.floor(Math.random() * this.level.spawnYAxis.length);
                     randomY = this.level.spawnYAxis[randomIndex];
                 }
 
@@ -96,6 +97,35 @@ export class LevelScene extends AbstractScene {
 
                 image.setScale(0.15);
                 image.setOrigin(0, 1);
+                image.setAlpha(0); // Hide image so we can show it with the animation tween
+
+                this.tweens.add({
+                    targets: image,
+                    alpha: 1,
+                    ease: 'Linear',
+                    delay: Phaser.Math.Between(0, 500),
+                    duration: 100,
+                });
+
+                //     {sprite}).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true, 0, 1000, true);
+                // var tween = scene.tweens.add({
+                //     targets: gameObject,
+                //     alpha: 1,
+                //     // alpha: '+=1',
+                //     // alpha: { from: 0, to: 1 },
+                //     // alpha: { start: 0, to: 1 },
+                //     // alpha: { start: value0, from: value1, to: value2 },
+                //     // alpha: function(target, key, value, targetIndex, totalTargets, tween)  { return newValue; },
+                //     // alpha: {
+                //     //      getActive: function (target, key, value, targetIndex, totalTargets, tween) { return newValue; },
+                //     //      getStart: function (target, key, value, targetIndex, totalTargets, tween) { return newValue; },
+                //     //      getEnd: function (target, key, value, targetIndex, totalTargets, tween) { return newValue; }
+                //     // },
+                //     ease: 'Linear',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
+                //     duration: 1000,
+                //     repeat: 0,            // -1: infinity
+                //     yoyo: false
+                // });
 
                 if (clickableObject.flipX) {
                     image.toggleFlipX();
