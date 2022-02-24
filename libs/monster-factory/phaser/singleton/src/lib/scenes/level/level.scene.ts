@@ -83,8 +83,7 @@ export class LevelScene extends AbstractScene {
         let { width, height } = this.sys.game.canvas;
 
         // Make sure objects down spawn half out of the screen
-        width -= this.OBJECT_MARGIN; 
-
+        width -= this.OBJECT_MARGIN;
 
         this.level.clickableObjects.forEach(clickableObject => {
             try {
