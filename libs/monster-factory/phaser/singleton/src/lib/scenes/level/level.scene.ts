@@ -1,6 +1,6 @@
 // import * as Phaser from 'phaser';
 
-import { PhaserSingletonService } from '../../phaser-singleton.module';
+import { PhaserSingletonService, Scene_Keys } from '../../phaser-singleton.module';
 import { General } from '../../utilities/general';
 import { AbstractScene } from '../abstract.scene';
 import { AvailableClickableObject, Level } from './level.model';
@@ -44,7 +44,7 @@ export class LevelScene extends AbstractScene {
 
     constructor() {
         // Config
-        super('level');
+        super(Scene_Keys.Level);
     }
 
     async preload() {
@@ -107,30 +107,10 @@ export class LevelScene extends AbstractScene {
                     targets: image,
                     alpha: 1,
                     y: randomY,
-                    ease: 'Linear',
-                    delay: Phaser.Math.Between(0, 500),
-                    duration: 200,
+                    ease: 'Bounce',
+                    delay: Phaser.Math.Between(0, 300),
+                    duration: 300,
                 });
-
-                //     {sprite}).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true, 0, 1000, true);
-                // var tween = scene.tweens.add({
-                //     targets: gameObject,
-                //     alpha: 1,
-                //     // alpha: '+=1',
-                //     // alpha: { from: 0, to: 1 },
-                //     // alpha: { start: 0, to: 1 },
-                //     // alpha: { start: value0, from: value1, to: value2 },
-                //     // alpha: function(target, key, value, targetIndex, totalTargets, tween)  { return newValue; },
-                //     // alpha: {
-                //     //      getActive: function (target, key, value, targetIndex, totalTargets, tween) { return newValue; },
-                //     //      getStart: function (target, key, value, targetIndex, totalTargets, tween) { return newValue; },
-                //     //      getEnd: function (target, key, value, targetIndex, totalTargets, tween) { return newValue; }
-                //     // },
-                //     ease: 'Linear',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
-                //     duration: 1000,
-                //     repeat: 0,            // -1: infinity
-                //     yoyo: false
-                // });
 
                 if (clickableObject.flipX) {
                     image.toggleFlipX();
@@ -186,7 +166,7 @@ export class LevelScene extends AbstractScene {
         objectsClicked.forEach((objectClicked: Phaser.GameObjects.Image) => {
             // If the object clicked is the same as the player is looking for, the player has found it.
             if (this.isObjectEqual(objectClicked, this.objectToFind.go) && !foundObject) {
-                this.showObjectFoundAnimation();
+                this.showObjectFoundAnimation(objectClicked);
                 this.removeFoundObject(objectClicked);
                 this.setNewObjectToFind();
                 foundObject = true;
@@ -201,7 +181,14 @@ export class LevelScene extends AbstractScene {
     /**
      * Shows an animation when the user finds the right object
      */
-    showObjectFoundAnimation() {
+    showObjectFoundAnimation(object: Phaser.GameObjects.Image) {
+        // this.tweens.add({
+        //     targets: object,
+        // alpha: 0,
+
+        // ease: 'Bounce',
+        //   duration: 1000,
+        //});
         return this.cameras.main.fadeFrom(this.FADE_ANIMATION, 0, 150, 0);
     }
 

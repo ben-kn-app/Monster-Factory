@@ -11,6 +11,10 @@ import { LevelScene } from './scenes/level/level.scene';
  * * The PhaserInstance is a singleton that controls the Game Scene, which is the UI portion of the Game Engine
  */
 
+export enum Scene_Keys {
+    Level = 'level'
+} 
+
 @NgModule({
     imports: [CommonModule],
     declarations: [],
