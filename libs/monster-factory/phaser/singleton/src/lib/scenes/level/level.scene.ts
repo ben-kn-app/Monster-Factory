@@ -44,6 +44,8 @@ export class LevelScene extends AbstractScene {
         ],
     };
 
+    searchLabel;
+    searchImage: Phaser.GameObjects.Image;
     scoreLabel;
     scoreTextObject: Phaser.GameObjects.Text;
     score = 0;
@@ -108,7 +110,9 @@ export class LevelScene extends AbstractScene {
          this.scoreTextObject = this.add.text(0, 0, this.score.toString(), { font: '50px Courier', color: '#ffffff' });
          Phaser.Display.Align.In.Center( this.scoreTextObject, this.scoreLabel); 
 
-        // Phaser.Display.Align.In.Center(r1, this.BACKGROUND_IMAGE);
+
+        this.searchLabel = this.add.rectangle(0, 0, 195, 280, 0xffffff);
+        Phaser.Display.Align.In.RightCenter(this.searchLabel, this.BACKGROUND_IMAGE);
 
         this.level.clickableObjects.forEach(clickableObject => {
             try {
@@ -172,6 +176,13 @@ export class LevelScene extends AbstractScene {
     setNewObjectToFind() {
         // Take a random object
         this.objectToFind = this.availableClickableObjects[Math.floor(Math.random() * this.availableClickableObjects.length)];
+
+        if (this.searchImage) {
+            this.searchImage.destroy();
+        }
+        this.searchImage = this.add.image(0,0,this.objectToFind.clickableObject.name || this.objectToFind.clickableObject.path).setScale(this.IMAGE_SCALE);
+        Phaser.Display.Align.In.Center(this.searchImage, this.searchLabel);
+
 
         // Pass it to ui
         PhaserSingletonService.findObjectObservable.next(this.objectToFind);
