@@ -97,7 +97,7 @@ export class LevelScene extends AbstractScene {
         // Make sure objects down spawn half out of the screen
         width -= this.OBJECT_MARGIN;
 
-        //  this.scoreLabel = this.add.rectangle(0, 0, 50, 50, 0x66ff66);
+         this.scoreLabel = this.add.rectangle(0, 0, 50, 50, 0x66ff66);
          this.scoreLabel = this.add.image(0, 0, this.BACKGROUND_SCORE);
          Phaser.Display.Align.In.TopLeft( this.scoreLabel, this.BACKGROUND_IMAGE); // Not needed
          this.scoreTextObject = this.add.text(0, 0, this.score.toString(), { font: '50px Courier', color: '#ffffff' });
@@ -224,6 +224,8 @@ export class LevelScene extends AbstractScene {
         // Wait 1s for the particle effect to finish before updating the score
         setTimeout(() => {
             this.scoreTextObject.setText(this.score.toString());
+            // Realign it
+            Phaser.Display.Align.In.Center( this.scoreTextObject, this.scoreLabel); 
         }, 1000)
 
         return this.cameras.main.fadeFrom(this.FADE_ANIMATION, 0, 150, 0);
