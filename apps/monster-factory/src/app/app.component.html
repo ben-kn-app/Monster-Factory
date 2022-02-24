@@ -1,30 +1,3 @@
 <ion-app>
-    <ion-split-pane contentId="main">
-        <!-- SIDE MENU  -->
-        <ion-menu contentId="main">
-            <ion-header>
-                <ion-toolbar>
-                    <ion-title>Ionic Menu</ion-title>
-                </ion-toolbar>
-            </ion-header>
-            <ion-content>
-                <ion-list>
-                    <ion-item><ion-button (click)="restartGame()">Restart</ion-button></ion-item>
-                   <!--  <ion-item><ion-button [routerLink]="['/home']">Go to Home Page</ion-button></ion-item>
-                    <ion-item><ion-button (click)="openShop()">Open Shop Modal</ion-button></ion-item>
-                    <ion-item><ion-button [routerLink]="['/shop']">Go to Shop Page</ion-button></ion-item> -->
-                </ion-list>
-                <div *ngIf="objectToFind">
-                    Hallo
-                    <ion-img [src]="objectToFind.path"></ion-img>
-                </div>
-                <div *ngFor="let action of actionsHistoryRef">
-                    <p> - {{action}}</p>
-                </div>
-                <a href="https://www.vecteezy.com/members/johnstocker_vector" target="_blank">Design by Johnstocker_vector by Vecteezy</a>
-            </ion-content>
-        </ion-menu>
-        <!-- the main content -->
-        <ion-router-outlet id="main"></ion-router-outlet>
-    </ion-split-pane>
+    <ion-router-outlet id="main"></ion-router-outlet>
 </ion-app>

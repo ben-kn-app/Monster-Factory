@@ -2,20 +2,20 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 import { HomePageComponent } from './home/home.page';
-import { ShopPageComponent } from './shop/shop.component';
+import { CreditsModal } from './credits/credits.component';
 
 const routes: Routes = [
     {
-        path: 'home',
+        path: 'game',
         component: HomePageComponent,
     },
     {
-        path: 'shop',
-        component: ShopPageComponent,
+        path: 'credits',
+        component: CreditsModal,
     },
     {
         path: '',
-        redirectTo: 'home',
+        redirectTo: 'game',
         pathMatch: 'full',
     },
 ];

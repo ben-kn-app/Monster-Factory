@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ShopPageComponent } from './shop.component';
+import { CreditsModal } from './credits.component';
 
-describe('ShopPageComponent', () => {
-  let component: ShopPageComponent;
-  let fixture: ComponentFixture<ShopPageComponent>;
+describe('CreditsModal', () => {
+  let component: CreditsModal;
+  let fixture: ComponentFixture<CreditsModal>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ShopPageComponent ]
+      declarations: [ CreditsModal ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ShopPageComponent);
+    fixture = TestBed.createComponent(CreditsModal);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

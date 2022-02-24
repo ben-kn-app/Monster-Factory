@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-// TODO - Resolve import/no-resolved for singleton instance
-// eslint-disable-next-line import/no-unresolved
+import { ModalController } from '@ionic/angular';
+
 import { PhaserSingletonService } from 'libs/monster-factory/phaser/singleton/src/lib/phaser-singleton.module';
+import { CreditsModal } from '../credits/credits.component';
 
 @Component({
     selector: 'openforge-home',
@@ -9,6 +10,7 @@ import { PhaserSingletonService } from 'libs/monster-factory/phaser/singleton/sr
     styleUrls: ['home.page.scss'],
 })
 export class HomePageComponent implements OnInit {
+    constructor(public modalController: ModalController) {}
     /**
      * * On Init, initilize the Phaser Singleton instance
      * The initialisation is delayed by 500ms to give the HomePage the chance to render
@@ -19,9 +21,27 @@ export class HomePageComponent implements OnInit {
      */
     async ngOnInit() {
         setTimeout(this.init, 500);
+        this.openModal();
     }
 
     async init() {
         await PhaserSingletonService.init();
+    }
+
+    goToGithub() {
+        (window as any).open("https://github.com/ben-kn-app/Monster-Factory", "_blank");
+        // this.document.location.href = 'https://github.com/ben-kn-app/Monster-Factory';
+    }
+
+    public async openModal() {
+        const modal = await this.modalController.create({
+            component: CreditsModal,
+            cssClass: 'fullscreen',
+        });
+        return await modal.present();
+    }
+
+    restartGame() {
+        PhaserSingletonService.restart();
     }
 }

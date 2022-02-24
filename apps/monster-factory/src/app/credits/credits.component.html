@@ -1,0 +1,40 @@
+<ion-header mode="ios">
+    <ion-toolbar mode="ios">
+        <ion-buttons slot="start">
+            <ion-menu-button color="dark"></ion-menu-button>
+        </ion-buttons>
+        <ion-buttons slot="end" *ngIf="isModal">
+            <ion-button (click)="closeModal()">
+                <ion-icon name="close-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>Monster Factory</ion-title>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+
+        <!-- CHEAP SWORD-->
+        <ion-card>
+            <div class="imageHolder">
+                <img src="/assets/level_monster_factory/monsterb1.svg">
+            </div>
+            <ion-card-header>
+                <ion-card-title>Monster Factory</ion-card-title>
+                <ion-card-subtitle>Credits</ion-card-subtitle>
+            </ion-card-header>
+            
+            <ion-card-content>
+                <p>This game is dedicated to my 2 year old son Moos who loves to find and point out little monsters in his books.</p>
+                <p><br> </p>
+                <p>Developed by <a href="https://www.linkedin.com/in/ben-chini-553032a/" target="_blank">Ben Chini</a> from <a href="https://kn-app.com" target="_blank">Kn-app Software Solutions</a></p>
+                <p>This game was made in a week for the <a href="https://itch.io/jam/brackeys-7" target="_blank">Brackeys Game Jam 2022.1</a>.</p>
+                <p>Vector Design attribution <a href="https://www.vecteezy.com/members/johnstocker_vector" target="_blank">by Johnstocker_vector from Vecteezy</a> .</p>
+                
+
+              
+            </ion-card-content>
+            <ion-button expand="full" color="secondary" (click)="closeModal()">Let me play</ion-button>
+        </ion-card>
+
+    
+</ion-content>
