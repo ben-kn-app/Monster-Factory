@@ -19,7 +19,7 @@ export class LevelScene extends AbstractScene {
     private level: Level = {
         assetsPrefix: 'assets/level_monster_factory/',
         background: 'background1280x720.png',
-        spawnYAxis: [140, 255, 320, 412, 495, 608, 640, 715],
+        spawnYAxis: [140, 255, 320, 412, 495, 608, 650, 715],
         clickableObjects: [
             { path: 'monstera1.svg' },
             { path: 'monstera2.svg' },
