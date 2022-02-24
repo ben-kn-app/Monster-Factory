@@ -9,6 +9,7 @@ export class LevelScene extends AbstractScene {
     private BACKGROUND_KEY: string = 'level_background';
     private BACKGROUND_IMAGE; // Is used in create();
     private FADE_ANIMATION = 300;
+    private OBJECT_MARGIN = 100;
 
     private availableClickableObjects: AvailableClickableObject[];
     private objectToFind: AvailableClickableObject;
@@ -79,7 +80,11 @@ export class LevelScene extends AbstractScene {
 
         // this.scale.on('resize', this.resize, this);
 
-        const { width, height } = this.sys.game.canvas;
+        let { width, height } = this.sys.game.canvas;
+
+        // Make sure objects down spawn half out of the screen
+        width -= this.OBJECT_MARGIN; 
+
 
         this.level.clickableObjects.forEach(clickableObject => {
             try {
@@ -93,7 +98,7 @@ export class LevelScene extends AbstractScene {
                     randomY = this.level.spawnYAxis[randomIndex];
                 }
 
-                const image = this.add.image(randomX, randomY, clickableObject.name || clickableObject.path);
+                const image = this.add.image(randomX, -100, clickableObject.name || clickableObject.path);
 
                 image.setScale(0.15);
                 image.setOrigin(0, 1);
@@ -102,9 +107,10 @@ export class LevelScene extends AbstractScene {
                 this.tweens.add({
                     targets: image,
                     alpha: 1,
+                    y: randomY,
                     ease: 'Linear',
                     delay: Phaser.Math.Between(0, 500),
-                    duration: 100,
+                    duration: 200,
                 });
 
                 //     {sprite}).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true, 0, 1000, true);
