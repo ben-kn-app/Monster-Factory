@@ -199,9 +199,10 @@ export class LevelScene extends AbstractScene {
         //});
 
         const particleEffects = this.scene.get(Scene_Keys.ParticleEffects);
+
         particleEffects.events.emit('trail-to', {
-            fromX: object.x - this.cameras.main.scrollX,
-            fromY: object.y,
+            fromX: object.getCenter().x,
+            fromY: object.getCenter().y,
             toX: this.scoreLabel.x + this.scoreLabel.width * 0.5,
             toY: this.scoreLabel.y + this.scoreLabel.height * 0.5,
         });
