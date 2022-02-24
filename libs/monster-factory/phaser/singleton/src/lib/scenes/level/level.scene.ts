@@ -150,7 +150,7 @@ export class LevelScene extends AbstractScene {
 
         objectsClicked.forEach((objectClicked: Phaser.GameObjects.Image) => {
             // If the object clicked is the same as the player is looking for, the player has found it.
-            if (this.isObjectEqual(objectClicked, this.objectToFind.go)) {
+            if (this.isObjectEqual(objectClicked, this.objectToFind.go) && !foundObject) {
                 this.showObjectFoundAnimation();
                 this.removeFoundObject(objectClicked);
                 this.setNewObjectToFind();
