@@ -8,7 +8,9 @@ import { AvailableClickableObject, Level } from './level.model';
 export class LevelScene extends AbstractScene {
     private BACKGROUND_KEY: string = 'level_background';
     private BACKGROUND_IMAGE; // Is used in create();
-    private FADE_ANIMATION = 300;
+    private BACKGROUND_SCORE: string = 'score_background'; 
+    private backgroundScorePath = 'assets/chalkboard.jpg';
+    private FADE_ANIMATION = 300; 
     private OBJECT_MARGIN = 100;
 
     private availableClickableObjects: AvailableClickableObject[];
@@ -43,6 +45,8 @@ export class LevelScene extends AbstractScene {
     };
 
     scoreLabel;
+    scoreTextObject: Phaser.GameObjects.Text;
+    score = 0;
 
     constructor() {
         // Config
@@ -55,6 +59,7 @@ export class LevelScene extends AbstractScene {
 
             // * Now load the background image
             this.load.image(this.BACKGROUND_KEY, this.level.assetsPrefix + this.level.background);
+            this.load.image(this.BACKGROUND_SCORE, this.backgroundScorePath);
 
             this.level.clickableObjects.forEach(clickableObject => {
                 try {
@@ -63,6 +68,8 @@ export class LevelScene extends AbstractScene {
                     console.error('Error loading image ' + clickableObject.path, error);
                 }
             });
+
+            this.score = 0;
 
             // Load particle Effects
             this.scene.run(Scene_Keys.ParticleEffects);
@@ -90,7 +97,12 @@ export class LevelScene extends AbstractScene {
         // Make sure objects down spawn half out of the screen
         width -= this.OBJECT_MARGIN;
 
-         this.scoreLabel = this.add.rectangle(0, 0, 50, 50, 0x66ff66);
+        //  this.scoreLabel = this.add.rectangle(0, 0, 50, 50, 0x66ff66);
+         this.scoreLabel = this.add.image(0, 0, this.BACKGROUND_SCORE);
+         Phaser.Display.Align.In.TopLeft( this.scoreLabel, this.BACKGROUND_IMAGE); // Not needed
+         this.scoreTextObject = this.add.text(0, 0, this.score.toString(), { font: '50px Courier', color: '#ffffff' });
+         Phaser.Display.Align.In.Center( this.scoreTextObject, this.scoreLabel); 
+
         // Phaser.Display.Align.In.Center(r1, this.BACKGROUND_IMAGE);
 
         this.level.clickableObjects.forEach(clickableObject => {
@@ -203,9 +215,16 @@ export class LevelScene extends AbstractScene {
         particleEffects.events.emit('trail-to', {
             fromX: object.getCenter().x,
             fromY: object.getCenter().y,
-            toX: this.scoreLabel.x + this.scoreLabel.width * 0.5,
-            toY: this.scoreLabel.y + this.scoreLabel.height * 0.5,
+            toX: this.scoreLabel.getCenter().x,
+            toY: this.scoreLabel.getCenter().y,
         });
+
+        this.score += 1;
+
+        // Wait 1s for the particle effect to finish before updating the score
+        setTimeout(() => {
+            this.scoreTextObject.setText(this.score.toString());
+        }, 1000)
 
         return this.cameras.main.fadeFrom(this.FADE_ANIMATION, 0, 150, 0);
     }
