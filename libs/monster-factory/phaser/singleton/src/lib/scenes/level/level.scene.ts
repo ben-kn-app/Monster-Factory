@@ -15,7 +15,7 @@ export class LevelScene extends AbstractScene {
 
     private level: Level = {
         assetsPrefix: 'assets/level_monster_factory/',
-        background: 'background.jpg',
+        background: 'background1280x720.png',
         clickableObjects: [
             { path: 'monstera1.svg' },
             { path: 'monstera2.svg' },
@@ -73,34 +73,35 @@ export class LevelScene extends AbstractScene {
         General.debugLog('level.scene.ts', 'Creating Assets...', this.scale.width, this.scale.height);
 
         // * Setup the Background Image
-        this.BACKGROUND_IMAGE = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, this.BACKGROUND_KEY);
+        this.BACKGROUND_IMAGE = this.add.image(0, 0, this.BACKGROUND_KEY).setOrigin(0, 0); // Set Origin as in phaser all game objects are positioned base on their center by default
 
         // reset available object
         this.availableClickableObjects = [];
 
-        // * Register our custom scroll manager
-        // this.scrollManager = new ScrollManager(this);
-        // this.scrollManager.registerScrollingBackground(this.backgroundImage);
-        // * Set cameras to the correct position
-        const ZOOM = 0.5;
-        // const ZOOM = 1;
-        this.cameras.main.setZoom(ZOOM);
-        //this.scrollManager.scrollToCenter();
+        // this.scale.on('resize', this.resize, this);
 
-        this.scale.on('resize', this.resize, this);
+        const { width, height } = this.sys.game.canvas;
+        // const r1 = this.add.rectangle(0, 0, width, height, 0x66ff66);
+        // Phaser.Display.Align.In.Center(r1, this.BACKGROUND_IMAGE);
+
+        General.debugLog(width, height);
+        // this.add.rectangle(0, 0, width, height, 0x6666ff);
+
+        const spawnYAxis = [1100, 1000, 930, 750, 630, 490, 385, 210, 90];
 
         this.level.clickableObjects.forEach(clickableObject => {
             try {
-                let { width, height } = this.sys.game.canvas;
-                width = width * (1 + ZOOM);
-                height = height * (1 + ZOOM);
-                const randomWidth = General.getRandomInt(width);
-                const randomHeight = General.getRandomInt(height);
+                // const { width, height } = this.sys.game.canvas;
+                // width = width * (1 + ZOOM);
+                // height = height * (1 + ZOOM);
+                const randomX = General.getRandomInt(width * 1.2);
+                // const randomY = General.getRandomInt(height*1.2);
+                const randomY = spawnYAxis[Math.random() * spawnYAxis.length || 0];
 
                 // Seems to be a bug here, as the images are too 'bundled', don't know what yet.
-                General.debugLog(width, height, randomWidth, randomHeight);
+                // General.debugLog(width, height, randomX, randomY);
 
-                const image = this.add.image(randomWidth, randomHeight, clickableObject.name || clickableObject.path);
+                const image = this.add.image(randomX, randomY, clickableObject.name || clickableObject.path);
 
                 image.setScale(0.25);
 

@@ -87,10 +87,17 @@ export class PhaserSingletonService {
                 PhaserSingletonService.activeGame = new Phaser.Game({
                     type: Phaser.AUTO,
                     scale: {
-                        mode: Phaser.Scale.RESIZE,
-                        width: window.innerWidth,
+                        // The width and height are automatically adjusted to fit inside the given target area,
+                        // while keeping the aspect ratio. Depending on the aspect ratio there may be some space inside the area which is not covered.
+                        // Source: https://rexrainbow.github.io/phaser3-rex-notes/docs/site/scalemanager/
+                        mode: Phaser.Scale.FIT,
+                        // we choose 1280x720 for good fit for tablet. And 16:9 ratio
+                        // https://gamedev.stackexchange.com/questions/104192/what-size-should-i-use-for-my-game-design
+                        width: 1280,
+                        height: 720,
                         autoCenter: Phaser.Scale.CENTER_BOTH,
-                        height: window.innerHeight,
+                        // width: window.innerWidth,
+                        // height: window.innerHeight,
                     },
                     parent: 'monster-factory-main',
                     scene: [LevelScene],
