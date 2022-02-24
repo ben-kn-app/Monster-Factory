@@ -47,6 +47,11 @@ export class LevelScene extends AbstractScene {
     scoreLabel;
     scoreTextObject: Phaser.GameObjects.Text;
     score = 0;
+    IMAGE_SCALE = 0.15;
+
+    SHOW_HINT_ANINIMATION_AFTER = 10000; // in ms
+
+    hintTimeout;
 
     constructor() {
         // Config
@@ -119,8 +124,8 @@ export class LevelScene extends AbstractScene {
 
                 const image = this.add.image(randomX, -100, clickableObject.name || clickableObject.path);
 
-                image.setScale(0.15);
-                image.setOrigin(0, 1);
+                image.setScale(this.IMAGE_SCALE);
+                image.setOrigin(0, 1); // Set anchor at the left feet, so we can position the monsters on the shelves
                 image.setAlpha(0); // Hide image so we can show it with the animation tween
 
                 this.tweens.add({
@@ -166,6 +171,8 @@ export class LevelScene extends AbstractScene {
 
         // Pass it to ui
         PhaserSingletonService.findObjectObservable.next(this.objectToFind);
+
+        this.showHintAnimation();
     }
 
     /**
@@ -176,6 +183,8 @@ export class LevelScene extends AbstractScene {
      */
     clickedOnObjects(objectsClicked: Phaser.GameObjects.GameObject[]) {
         General.debugLog(objectsClicked);
+
+        this.showHintAnimation();
 
         if (!objectsClicked || objectsClicked.length === 0) {
             return this.showObjectMissClickAnimation();
@@ -237,6 +246,27 @@ export class LevelScene extends AbstractScene {
     showObjectMissClickAnimation() {
         return this.cameras.main.fadeFrom(this.FADE_ANIMATION, 150, 0, 0);
     }
+
+    /**
+     * After X seconds we show a hint animation
+     * @param object 
+     */
+    showHintAnimation(object: Phaser.GameObjects.Image = this.objectToFind.go) {
+        delete this.hintTimeout;
+
+        this.hintTimeout = setTimeout(() => {
+            this.tweens.add({
+                targets: object,
+                scaleX: {from: this.IMAGE_SCALE - 0.01, to: this.IMAGE_SCALE},
+                scaleY: {from: this.IMAGE_SCALE - 0.01, to: this.IMAGE_SCALE},
+                // ease: 'Bounce',
+                duration: 200,
+                repeat: 1,
+            });
+            this.showHintAnimation();
+        }, this.SHOW_HINT_ANINIMATION_AFTER);
+    }
+
 
     /**
      * Boolean check if 2 objects are equal
