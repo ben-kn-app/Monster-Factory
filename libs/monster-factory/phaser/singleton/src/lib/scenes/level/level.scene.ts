@@ -49,7 +49,7 @@ export class LevelScene extends AbstractScene {
     score = 0;
     IMAGE_SCALE = 0.15;
 
-    SHOW_HINT_ANINIMATION_AFTER = 10000; // in ms
+    SHOW_HINT_ANINIMATION_AFTER = 2000; // in ms
 
     hintTimeout;
 
@@ -256,7 +256,7 @@ export class LevelScene extends AbstractScene {
      * @param object 
      */
     showHintAnimation(object: Phaser.GameObjects.Image = this.objectToFind.go) {
-        delete this.hintTimeout;
+        clearTimeout(this.hintTimeout);
 
         this.hintTimeout = setTimeout(() => {
             this.tweens.add({
