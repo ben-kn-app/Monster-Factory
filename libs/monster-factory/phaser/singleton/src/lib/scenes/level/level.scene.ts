@@ -16,6 +16,7 @@ export class LevelScene extends AbstractScene {
     private level: Level = {
         assetsPrefix: 'assets/level_monster_factory/',
         background: 'background1280x720.png',
+        spawnYAxis: [140, 255, 320, 412, 495, 608, 640, 715],
         clickableObjects: [
             { path: 'monstera1.svg' },
             { path: 'monstera2.svg' },
@@ -37,8 +38,6 @@ export class LevelScene extends AbstractScene {
             { path: 'monsterc4.svg' },
             { path: 'monsterc5.svg' },
             { path: 'monsterc6.svg' },
-            // { path: 'monster1.png', flipX: true },
-            // { path: 'monster2.png', flipX: true }
         ],
     };
 
@@ -81,29 +80,22 @@ export class LevelScene extends AbstractScene {
         // this.scale.on('resize', this.resize, this);
 
         const { width, height } = this.sys.game.canvas;
-        // const r1 = this.add.rectangle(0, 0, width, height, 0x66ff66);
-        // Phaser.Display.Align.In.Center(r1, this.BACKGROUND_IMAGE);
-
-        General.debugLog(width, height);
-        // this.add.rectangle(0, 0, width, height, 0x6666ff);
-
-        const spawnYAxis = [1100, 1000, 930, 750, 630, 490, 385, 210, 90];
 
         this.level.clickableObjects.forEach(clickableObject => {
             try {
-                // const { width, height } = this.sys.game.canvas;
-                // width = width * (1 + ZOOM);
-                // height = height * (1 + ZOOM);
-                const randomX = General.getRandomInt(width * 1.2);
-                // const randomY = General.getRandomInt(height*1.2);
-                const randomY = spawnYAxis[Math.random() * spawnYAxis.length || 0];
+                const randomX = General.getRandomInt(width);
+                let randomY = General.getRandomInt(height);
 
-                // Seems to be a bug here, as the images are too 'bundled', don't know what yet.
-                // General.debugLog(width, height, randomX, randomY);
+                // Can we use random Y coordinates to spawn clickable objects or do we need to adhere to specific spawn points
+                if (this.level.spawnYAxis) {
+                    const randomIndex = Math.floor(Math.random() * this.level.spawnYAxis.length);
+                    randomY = this.level.spawnYAxis[randomIndex];
+                }
 
                 const image = this.add.image(randomX, randomY, clickableObject.name || clickableObject.path);
 
-                image.setScale(0.25);
+                image.setScale(0.15);
+                image.setOrigin(0, 1);
 
                 if (clickableObject.flipX) {
                     image.toggleFlipX();
@@ -115,13 +107,6 @@ export class LevelScene extends AbstractScene {
                 // Add image to available objects, so we can later search or delete them.
                 // Without affecting the core level clickable objects
                 this.availableClickableObjects.push({ go: image, clickableObject, path: this.level.assetsPrefix + clickableObject.path });
-
-                //  Enables all kind of input actions on this image (click, etc)
-                // image.inputEnabled = true;
-
-                // text = game.add.text(250, 16, '', { fill: '#ffffff' });
-
-                // image.events.onInputDown.add(listener, this);
             } catch (error) {
                 console.error('Error adding image ' + clickableObject.path, error);
             }
