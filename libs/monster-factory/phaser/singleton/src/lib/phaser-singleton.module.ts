@@ -6,13 +6,15 @@ import { Subject } from 'rxjs';
 
 // import { ForgeScene } from './scenes/forge.scene';
 import { LevelScene } from './scenes/level/level.scene';
+import ParticleEffects from './scenes/ParticleEffects';
 
 /**
  * * The PhaserInstance is a singleton that controls the Game Scene, which is the UI portion of the Game Engine
  */
 
 export enum Scene_Keys {
-    Level = 'level'
+    Level = 'level',
+    ParticleEffects = 'particle_effects'
 } 
 
 @NgModule({
@@ -104,7 +106,7 @@ export class PhaserSingletonService {
                         // height: window.innerHeight,
                     },
                     parent: 'monster-factory-main',
-                    scene: [LevelScene],
+                    scene: [LevelScene, ParticleEffects],
                     plugins: {
                         global: [],
                         scene: [],

@@ -42,6 +42,8 @@ export class LevelScene extends AbstractScene {
         ],
     };
 
+    scoreLabel;
+
     constructor() {
         // Config
         super(Scene_Keys.Level);
@@ -61,6 +63,9 @@ export class LevelScene extends AbstractScene {
                     console.error('Error loading image ' + clickableObject.path, error);
                 }
             });
+
+            // Load particle Effects
+            this.scene.run(Scene_Keys.ParticleEffects);
         } catch (e) {
             console.error('level.scene.ts', 'error preloading', e);
         }
@@ -84,6 +89,9 @@ export class LevelScene extends AbstractScene {
 
         // Make sure objects down spawn half out of the screen
         width -= this.OBJECT_MARGIN;
+
+         this.scoreLabel = this.add.rectangle(0, 0, 50, 50, 0x66ff66);
+        // Phaser.Display.Align.In.Center(r1, this.BACKGROUND_IMAGE);
 
         this.level.clickableObjects.forEach(clickableObject => {
             try {
@@ -189,6 +197,15 @@ export class LevelScene extends AbstractScene {
         // ease: 'Bounce',
         //   duration: 1000,
         //});
+
+        const particleEffects = this.scene.get(Scene_Keys.ParticleEffects);
+        particleEffects.events.emit('trail-to', {
+            fromX: object.x - this.cameras.main.scrollX,
+            fromY: object.y,
+            toX: this.scoreLabel.x + this.scoreLabel.width * 0.5,
+            toY: this.scoreLabel.y + this.scoreLabel.height * 0.5,
+        });
+
         return this.cameras.main.fadeFrom(this.FADE_ANIMATION, 0, 150, 0);
     }
 
