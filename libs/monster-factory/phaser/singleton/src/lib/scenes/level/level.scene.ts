@@ -5,12 +5,21 @@ import { General } from '../../utilities/general';
 import { AbstractScene } from '../abstract.scene';
 import { AvailableClickableObject, Level } from './level.model';
 
+enum AssetKeys {
+    MonsterLaugh = 'monster_laugh.wav',
+    MonsterApplause = 'monster_applause.wav',
+    LevelComplete = 'level_complete.wav',
+    ClickCorrect = 'click_correct.wav',
+    ClickWrong = 'click_wrong.wav',
+}
+
 export class LevelScene extends AbstractScene {
+    private SOUNDS_ASSETS_PATH: string = 'assets/sounds/';
     private BACKGROUND_KEY: string = 'level_background';
     private BACKGROUND_IMAGE; // Is used in create();
-    private BACKGROUND_SCORE: string = 'score_background'; 
+    private BACKGROUND_SCORE: string = 'score_background';
     private backgroundScorePath = 'assets/chalkboard.jpg';
-    private FADE_ANIMATION = 300; 
+    private FADE_ANIMATION = 300;
     private OBJECT_MARGIN = 100;
 
     private availableClickableObjects: AvailableClickableObject[];
@@ -84,6 +93,18 @@ export class LevelScene extends AbstractScene {
             this.load.image(this.BACKGROUND_KEY, this.level.assetsPrefix + this.level.background);
             this.load.image(this.BACKGROUND_SCORE, this.backgroundScorePath);
 
+            // *** Load Sounds
+            try {
+                this.load.audio(AssetKeys.ClickCorrect, this.SOUNDS_ASSETS_PATH + AssetKeys.ClickCorrect);
+                this.load.audio(AssetKeys.ClickWrong, this.SOUNDS_ASSETS_PATH + AssetKeys.ClickWrong);
+                this.load.audio(AssetKeys.LevelComplete, this.SOUNDS_ASSETS_PATH + AssetKeys.LevelComplete);
+                this.load.audio(AssetKeys.MonsterApplause, this.SOUNDS_ASSETS_PATH + AssetKeys.MonsterApplause);
+                this.load.audio(AssetKeys.MonsterLaugh, this.SOUNDS_ASSETS_PATH + AssetKeys.MonsterLaugh);
+            } catch (error) {
+                console.error('Error loading sounds assets', error);
+            }
+            this.load.audio(AssetKeys.ClickCorrect, this.SOUNDS_ASSETS_PATH + AssetKeys.ClickCorrect);
+
             this.level.clickableObjects.forEach(clickableObject => {
                 try {
                     this.load.image(clickableObject.name || clickableObject.path, this.level.assetsPrefix + clickableObject.path);
@@ -120,12 +141,11 @@ export class LevelScene extends AbstractScene {
         // Make sure objects down spawn half out of the screen
         width -= this.OBJECT_MARGIN;
 
-         this.scoreLabel = this.add.rectangle(0, 0, 50, 50, 0x66ff66);
-         this.scoreLabel = this.add.image(0, 0, this.BACKGROUND_SCORE);
-         Phaser.Display.Align.In.TopLeft( this.scoreLabel, this.BACKGROUND_IMAGE); // Not needed
-         this.scoreTextObject = this.add.text(0, 0, this.score.toString(), { font: '50px Courier', color: '#ffffff' });
-         Phaser.Display.Align.In.Center( this.scoreTextObject, this.scoreLabel); 
-
+        this.scoreLabel = this.add.rectangle(0, 0, 50, 50, 0x66ff66);
+        this.scoreLabel = this.add.image(0, 0, this.BACKGROUND_SCORE);
+        Phaser.Display.Align.In.TopLeft(this.scoreLabel, this.BACKGROUND_IMAGE); // Not needed
+        this.scoreTextObject = this.add.text(0, 0, this.score.toString(), { font: '50px Courier', color: '#ffffff' });
+        Phaser.Display.Align.In.Center(this.scoreTextObject, this.scoreLabel);
 
         this.searchLabel = this.add.rectangle(0, 0, 195, 280, 0xffffff);
         Phaser.Display.Align.In.RightCenter(this.searchLabel, this.BACKGROUND_IMAGE);
@@ -158,8 +178,14 @@ export class LevelScene extends AbstractScene {
                 });
 
                 // Grow on mouse over. Only relevant in browser
-                image.on("pointerover", () => { image.scaleX = this.IMAGE_SCALE + 0.01; image.scaleY = this.IMAGE_SCALE + 0.01; });
-                image.on("pointerout", () => { image.scaleX = this.IMAGE_SCALE; image.scaleY = this.IMAGE_SCALE; });
+                image.on('pointerover', () => {
+                    image.scaleX = this.IMAGE_SCALE + 0.01;
+                    image.scaleY = this.IMAGE_SCALE + 0.01;
+                });
+                image.on('pointerout', () => {
+                    image.scaleX = this.IMAGE_SCALE;
+                    image.scaleY = this.IMAGE_SCALE;
+                });
 
                 if (clickableObject.flipX) {
                     image.toggleFlipX();
@@ -196,9 +222,8 @@ export class LevelScene extends AbstractScene {
         if (this.searchImage) {
             this.searchImage.destroy();
         }
-        this.searchImage = this.add.image(0,0,this.objectToFind.clickableObject.name || this.objectToFind.clickableObject.path).setScale(this.IMAGE_SCALE);
+        this.searchImage = this.add.image(0, 0, this.objectToFind.clickableObject.name || this.objectToFind.clickableObject.path).setScale(this.IMAGE_SCALE);
         Phaser.Display.Align.In.Center(this.searchImage, this.searchLabel);
-
 
         // Pass it to ui
         PhaserSingletonService.findObjectObservable.next(this.objectToFind);
@@ -259,14 +284,16 @@ export class LevelScene extends AbstractScene {
             toY: this.scoreLabel.getCenter().y,
         });
 
+        this.sound.play(AssetKeys.ClickCorrect);
+
         this.score += 1;
 
         // Wait 1s for the particle effect to finish before updating the score
         setTimeout(() => {
             this.scoreTextObject.setText(this.score.toString());
             // Realign it
-            Phaser.Display.Align.In.Center( this.scoreTextObject, this.scoreLabel); 
-        }, 1000)
+            Phaser.Display.Align.In.Center(this.scoreTextObject, this.scoreLabel);
+        }, 1000);
 
         return this.cameras.main.fadeFrom(this.FADE_ANIMATION, 0, 150, 0);
     }
@@ -275,12 +302,13 @@ export class LevelScene extends AbstractScene {
      * Shows an animation when the user finds the right object
      */
     showObjectMissClickAnimation() {
+        this.sound.play(AssetKeys.ClickWrong);
         return this.cameras.main.fadeFrom(this.FADE_ANIMATION, 150, 0, 0);
     }
 
     /**
      * After X seconds we show a hint animation
-     * @param object 
+     * @param object
      */
     showHintAnimation(object: Phaser.GameObjects.Image = this.objectToFind.go) {
         clearTimeout(this.hintTimeout);
@@ -288,16 +316,16 @@ export class LevelScene extends AbstractScene {
         this.hintTimeout = setTimeout(() => {
             this.tweens.add({
                 targets: object,
-                scaleX: {from: this.IMAGE_SCALE - 0.01, to: this.IMAGE_SCALE},
-                scaleY: {from: this.IMAGE_SCALE - 0.01, to: this.IMAGE_SCALE},
+                scaleX: { from: this.IMAGE_SCALE - 0.01, to: this.IMAGE_SCALE },
+                scaleY: { from: this.IMAGE_SCALE - 0.01, to: this.IMAGE_SCALE },
                 // ease: 'Bounce',
-                duration: 200,
-                repeat: 1,
+                duration: 300,
+                repeat: 2,
             });
+            this.sound.play(AssetKeys.MonsterLaugh);
             this.showHintAnimation();
         }, this.SHOW_HINT_ANINIMATION_AFTER);
     }
-
 
     /**
      * Boolean check if 2 objects are equal
@@ -333,7 +361,12 @@ export class LevelScene extends AbstractScene {
 
         // If no available objects are available we restart the level
         if (this.availableClickableObjects.length === 0) {
-            this.scene.restart();
+            this.gameOver();
         }
+    }
+
+    gameOver() {
+        this.sound.play(AssetKeys.LevelComplete);
+        this.scene.restart();
     }
 }
