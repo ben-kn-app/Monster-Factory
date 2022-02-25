@@ -3,6 +3,7 @@ import { ModuleWithProviders, NgModule, NgZone, Optional, SkipSelf } from '@angu
 import { SwordTypeEnum } from '@knapp/shared/data-access-model';
 import * as Phaser from 'phaser';
 import { Subject } from 'rxjs';
+import GameOver from './scenes/gameOver';
 
 // import { ForgeScene } from './scenes/forge.scene';
 import { LevelScene } from './scenes/level/level.scene';
@@ -14,7 +15,8 @@ import ParticleEffects from './scenes/ParticleEffects';
 
 export enum Scene_Keys {
     Level = 'level',
-    ParticleEffects = 'particle_effects'
+    ParticleEffects = 'particle_effects',
+    GameOver = 'game_over'
 } 
 
 @NgModule({
@@ -106,7 +108,7 @@ export class PhaserSingletonService {
                         // height: window.innerHeight,
                     },
                     parent: 'monster-factory-main',
-                    scene: [LevelScene, ParticleEffects],
+                    scene: [LevelScene, ParticleEffects, GameOver],
                     plugins: {
                         global: [],
                         scene: [],

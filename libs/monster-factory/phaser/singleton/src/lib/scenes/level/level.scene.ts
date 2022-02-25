@@ -8,7 +8,6 @@ import { AvailableClickableObject, Level } from './level.model';
 enum AssetKeys {
     MonsterLaugh = 'monster_laugh.wav',
     MonsterApplause = 'monster_applause.wav',
-    LevelComplete = 'level_complete.wav',
     ClickCorrect = 'click_correct.wav',
     ClickWrong = 'click_wrong.wav',
 }
@@ -97,7 +96,6 @@ export class LevelScene extends AbstractScene {
             try {
                 this.load.audio(AssetKeys.ClickCorrect, this.SOUNDS_ASSETS_PATH + AssetKeys.ClickCorrect);
                 this.load.audio(AssetKeys.ClickWrong, this.SOUNDS_ASSETS_PATH + AssetKeys.ClickWrong);
-                this.load.audio(AssetKeys.LevelComplete, this.SOUNDS_ASSETS_PATH + AssetKeys.LevelComplete);
                 this.load.audio(AssetKeys.MonsterApplause, this.SOUNDS_ASSETS_PATH + AssetKeys.MonsterApplause);
                 this.load.audio(AssetKeys.MonsterLaugh, this.SOUNDS_ASSETS_PATH + AssetKeys.MonsterLaugh);
             } catch (error) {
@@ -295,7 +293,7 @@ export class LevelScene extends AbstractScene {
             Phaser.Display.Align.In.Center(this.scoreTextObject, this.scoreLabel);
         }, 1000);
 
-        return this.cameras.main.fadeFrom(this.FADE_ANIMATION, 0, 150, 0);
+        return this.cameras.main.fadeFrom(this.FADE_ANIMATION, 0, 250, 0);
     }
 
     /**
@@ -322,7 +320,7 @@ export class LevelScene extends AbstractScene {
                 duration: 300,
                 repeat: 2,
             });
-            this.sound.play(AssetKeys.MonsterLaugh);
+            // this.sound.play(AssetKeys.MonsterLaugh);
             this.showHintAnimation();
         }, this.SHOW_HINT_ANINIMATION_AFTER);
     }
@@ -366,7 +364,12 @@ export class LevelScene extends AbstractScene {
     }
 
     gameOver() {
-        this.sound.play(AssetKeys.LevelComplete);
-        this.scene.restart();
+        // Wait a second for all animations to finish
+        setTimeout(() => {
+            this.cameras.main.fade(this.FADE_ANIMATION, 0, 0, 0);
+            setTimeout(() => {
+                this.scene.start(Scene_Keys.GameOver);
+            }, this.FADE_ANIMATION);
+        }, 1500);
     }
 }
