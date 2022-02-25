@@ -134,11 +134,6 @@ export class LevelScene extends AbstractScene {
 
         // this.scale.on('resize', this.resize, this);
 
-        let { width, height } = this.sys.game.canvas;
-
-        // Make sure objects down spawn half out of the screen
-        width -= this.OBJECT_MARGIN;
-
         this.scoreLabel = this.add.rectangle(0, 0, 50, 50, 0x66ff66);
         this.scoreLabel = this.add.image(0, 0, this.BACKGROUND_SCORE);
         Phaser.Display.Align.In.TopLeft(this.scoreLabel, this.BACKGROUND_IMAGE); // Not needed
@@ -150,21 +145,16 @@ export class LevelScene extends AbstractScene {
 
         this.level.clickableObjects.forEach(clickableObject => {
             try {
-                const randomX = General.getRandomInt(width);
-                let randomY = General.getRandomInt(height);
+                const { randomX, randomY } = this.getRandomCoordinates();
 
-                // Can we use random Y coordinates to spawn clickable objects or do we need to adhere to specific spawn points
-                if (this.level.spawnYAxis) {
-                    const randomIndex = Phaser.Math.Between(0, this.level.spawnYAxis.length);
-                    // const randomIndex = Math.floor(Math.random() * this.level.spawnYAxis.length);
-                    randomY = this.level.spawnYAxis[randomIndex];
-                }
-
+                // const image = this.physics.add.image(randomX, -100, clickableObject.name || clickableObject.path);
                 const image = this.add.image(randomX, -100, clickableObject.name || clickableObject.path);
 
                 image.setScale(this.IMAGE_SCALE);
                 image.setOrigin(0, 1); // Set anchor at the left feet, so we can position the monsters on the shelves
                 image.setAlpha(0); // Hide image so we can show it with the animation tween
+                // image.setBounce(.1);
+                // image.setCollideWorldBounds(true);
 
                 this.tweens.add({
                     targets: image,
@@ -211,6 +201,28 @@ export class LevelScene extends AbstractScene {
         // Set initial object to find
         // This will be updated everytime the user correctly searches for the object
         this.setNewObjectToFind();
+    }
+
+    /**
+     * Get random coordinates to place an object
+     */
+    getRandomCoordinates() {
+        let { width, height } = this.sys.game.canvas;
+
+        // Make sure objects down spawn half out of the screen
+        width -= this.OBJECT_MARGIN;
+
+        const randomX = General.getRandomInt(width);
+        let randomY = General.getRandomInt(height);
+
+        // Can we use random Y coordinates to spawn clickable objects or do we need to adhere to specific spawn points
+        if (this.level.spawnYAxis) {
+            const randomIndex = Phaser.Math.Between(0, this.level.spawnYAxis.length);
+            // const randomIndex = Math.floor(Math.random() * this.level.spawnYAxis.length);
+            randomY = this.level.spawnYAxis[randomIndex];
+        }
+
+        return { randomX, randomY };
     }
 
     setNewObjectToFind() {
