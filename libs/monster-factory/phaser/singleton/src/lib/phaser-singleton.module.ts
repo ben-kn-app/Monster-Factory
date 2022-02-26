@@ -112,7 +112,7 @@ export class PhaserSingletonService {
                     physics: {
                         default: 'matter',
                         matter: {
-                            // debug: true,
+                            debug: true,
                             enableSleeping: true, // improves performance when objects are not in velocity.
                             gravity: {
                                 y: 1

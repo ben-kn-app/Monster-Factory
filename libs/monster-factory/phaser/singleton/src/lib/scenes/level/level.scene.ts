@@ -147,7 +147,11 @@ export class LevelScene extends AbstractScene {
         // this.scoreTextObject = this.add.text(0, 0, this.score.toString(), { font: '50px Courier', color: '#ffffff' });
         // Phaser.Display.Align.In.Center(this.scoreTextObject, this.scoreLabel);
 
-        this.searchLabel = this.matter.add.image(0, 0, this.BACKGROUND_SEARCH).setOrigin(0,0).setStatic(true);
+        this.searchLabel = this.matter.add.image(90, 130, this.BACKGROUND_SEARCH, null, {
+            isStatic: true,
+            // render: { sprite: { xOffset: 0.30, yOffset: 0.15 } }
+
+        });
         // Phaser.Display.Align.In.TopLeft(this.searchLabel, this.BACKGROUND_IMAGE);
 
         this.level.spawnYAxis.forEach((y) => {
@@ -163,21 +167,25 @@ export class LevelScene extends AbstractScene {
 
                 //const image = this.physics.add.image(randomX, -100, clickableObject.name || clickableObject.path);
                 const image = this.matter.add.image(randomX, randomY, clickableObject.name || clickableObject.path, null, { 
-                    chamfer: { radius: [250,250,30,30],
+                    // chamfer: { radius: [250,250,30,30],
                     // qualityMin: 100
-                 },
+                //  },
+                            //  render: { sprite: { xOffset: 0.30, yOffset: 0.15 } },
+                             circleRadius: 200,
+
                     restitution: 0.5, // elasticity
                     // slop: 1
                 });
-                image.setScale(this.IMAGE_SCALE);
+                
                 // image.setOrigin(0, 0.5); // Set anchor center botom, so we can position the monsters on the shelves
-                image.setAlpha(0); // Hide image so we can show it with the animation tween
+                image.setAlpha(0).setScale(this.IMAGE_SCALE); // Hide image so we can show it with the animation tween
                 image.setBounce(0);
                 //image.setCollideWorldBounds(true);
 
                 this.tweens.add({
                     targets: image,
                     alpha: 1,
+                    // scale: 1,
                     //y: randomY,
                     ease: 'Bounce',
                     delay: Phaser.Math.Between(0, 300),
