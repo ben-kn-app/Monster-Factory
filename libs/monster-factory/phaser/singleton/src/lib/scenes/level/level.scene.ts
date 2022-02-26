@@ -141,21 +141,21 @@ export class LevelScene extends AbstractScene {
         // this.matter.world.setBounds(0, 0, 1200, 720, 1);
         this.matter.world.setBounds();
 
+        // this.scoreLabel = this.add.rectangle(0, 0, 50, 50, 0x66ff66);
+        // this.scoreLabel = this.matter.add.image(0, 0, this.BACKGROUND_SCORE).setStatic(true);
+        // Phaser.Display.Align.In.TopLeft(this.scoreLabel, this.BACKGROUND_IMAGE); // Not needed
+        // this.scoreTextObject = this.add.text(0, 0, this.score.toString(), { font: '50px Courier', color: '#ffffff' });
+        // Phaser.Display.Align.In.Center(this.scoreTextObject, this.scoreLabel);
+
+        this.searchLabel = this.matter.add.image(0, 0, this.BACKGROUND_SEARCH).setOrigin(0,0).setStatic(true);
+        // Phaser.Display.Align.In.TopLeft(this.searchLabel, this.BACKGROUND_IMAGE);
+
         this.level.spawnYAxis.forEach((y) => {
-            this.add.rectangle(0,y,(1280*2),5, 0x66ff66);
+            // this.add.rectangle(0,y,(1280*2),5, 0x66ff66);
             this.matter.add.rectangle(0,y,(1280*2),1, {
                 isStatic: true
             });
         });
-
-        // this.scoreLabel = this.add.rectangle(0, 0, 50, 50, 0x66ff66);
-        this.scoreLabel = this.matter.add.image(0, 0, this.BACKGROUND_SCORE).setStatic(true);
-        Phaser.Display.Align.In.TopLeft(this.scoreLabel, this.BACKGROUND_IMAGE); // Not needed
-        this.scoreTextObject = this.add.text(0, 0, this.score.toString(), { font: '50px Courier', color: '#ffffff' });
-        Phaser.Display.Align.In.Center(this.scoreTextObject, this.scoreLabel);
-
-        this.searchLabel = this.matter.add.image(0, 0, this.BACKGROUND_SEARCH).setStatic(true);
-        Phaser.Display.Align.In.TopRight(this.searchLabel, this.BACKGROUND_IMAGE);
 
         this.level.clickableObjects.forEach(clickableObject => {
             try {
@@ -248,12 +248,16 @@ export class LevelScene extends AbstractScene {
         // Take a random object
         this.objectToFind = this.availableClickableObjects[Math.floor(Math.random() * this.availableClickableObjects.length)];
 
-        if (this.searchImage) {
-            this.searchImage.destroy();
-        }
-        this.searchImage = this.add.image(0, 0, this.objectToFind.clickableObject.name || this.objectToFind.clickableObject.path).setScale(this.IMAGE_SCALE);
-        Phaser.Display.Align.In.Center(this.searchImage, this.searchLabel);
+        setTimeout(() => {
+            if (this.searchImage) {
+                this.searchImage.destroy();
+            }
+            this.searchImage = this.add.image(96, 145, this.objectToFind.clickableObject.name || this.objectToFind.clickableObject.path).setScale((this.IMAGE_SCALE*0.8));
+            // Phaser.Display.Align.In.Center(this.searchImage, this.searchLabel);    
+        }, 1000);
 
+
+     
         // this.searchRect = this.add.rectangle(0, 0, 90, 120, 0xdcdcdc, 0.5);
         // Phaser.Display.Align.In.Center(this.searchRect, this.searchLabel);
 
@@ -312,8 +316,8 @@ export class LevelScene extends AbstractScene {
         particleEffects.events.emit('trail-to', {
             fromX: object.getCenter().x,
             fromY: object.getCenter().y,
-            toX: this.scoreLabel.getCenter().x,
-            toY: this.scoreLabel.getCenter().y,
+            toX: this.searchLabel.getCenter().x,
+            toY: this.searchLabel.getCenter().y,
         });
 
         this.sound.play(AssetKeys.ClickCorrect);
@@ -321,11 +325,13 @@ export class LevelScene extends AbstractScene {
         this.score += 1;
 
         // Wait 1s for the particle effect to finish before updating the score
-        setTimeout(() => {
-            this.scoreTextObject.setText(this.score.toString());
-            // Realign it
-            Phaser.Display.Align.In.Center(this.scoreTextObject, this.scoreLabel);
-        }, 1000);
+        if (this.scoreTextObject) {
+            setTimeout(() => {
+                this.scoreTextObject.setText(this.score.toString());
+                // Realign it
+                Phaser.Display.Align.In.Center(this.scoreTextObject, this.scoreLabel);
+            }, 1000);
+        }
 
         return this.cameras.main.fadeFrom(this.FADE_ANIMATION, 0, 250, 0);
     }
