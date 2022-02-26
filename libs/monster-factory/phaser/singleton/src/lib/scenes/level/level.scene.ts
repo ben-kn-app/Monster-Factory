@@ -17,6 +17,7 @@ export class LevelScene extends AbstractScene {
     private BACKGROUND_KEY: string = 'level_background';
     private BACKGROUND_IMAGE; // Is used in create();
     private BACKGROUND_SCORE: string = 'score_background';
+    private BACKGROUND_SEARCH: string = 'assets/wanted.png';
     private backgroundScorePath = 'assets/chalkboard.jpg';
     private FADE_ANIMATION = 300;
     private OBJECT_MARGIN = 100;
@@ -27,7 +28,8 @@ export class LevelScene extends AbstractScene {
     private level: Level = {
         assetsPrefix: 'assets/level_monster_factory/',
         background: 'background1280x720.png',
-        spawnYAxis: [140, 255, 320, 412, 495, 608, 650, 715],
+        // spawnYAxis: [140, 255, 320, 412, 495, 608, 650, 715],
+        spawnYAxis: [140, 255, 412, 495, 608, 715],
         clickableObjects: [
             { path: 'monstera1.svg' },
             { path: 'monstera2.svg' },
@@ -69,6 +71,7 @@ export class LevelScene extends AbstractScene {
     };
 
     searchLabel;
+    searchRect;
     searchImage: Phaser.GameObjects.Image;
     scoreLabel;
     scoreTextObject: Phaser.GameObjects.Text;
@@ -91,6 +94,7 @@ export class LevelScene extends AbstractScene {
             // * Now load the background image
             this.load.image(this.BACKGROUND_KEY, this.level.assetsPrefix + this.level.background);
             this.load.image(this.BACKGROUND_SCORE, this.backgroundScorePath);
+            this.load.image(this.BACKGROUND_SEARCH, this.BACKGROUND_SEARCH);
 
             // *** Load Sounds
             try {
@@ -134,32 +138,47 @@ export class LevelScene extends AbstractScene {
 
         // this.scale.on('resize', this.resize, this);
 
-        this.scoreLabel = this.add.rectangle(0, 0, 50, 50, 0x66ff66);
-        this.scoreLabel = this.add.image(0, 0, this.BACKGROUND_SCORE);
+        // this.matter.world.setBounds(0, 0, 1200, 720, 1);
+        this.matter.world.setBounds();
+
+        this.level.spawnYAxis.forEach((y) => {
+            this.add.rectangle(0,y,(1280*2),5, 0x66ff66);
+            this.matter.add.rectangle(0,y,(1280*2),1, {
+                isStatic: true
+            });
+        });
+
+        // this.scoreLabel = this.add.rectangle(0, 0, 50, 50, 0x66ff66);
+        this.scoreLabel = this.matter.add.image(0, 0, this.BACKGROUND_SCORE).setStatic(true);
         Phaser.Display.Align.In.TopLeft(this.scoreLabel, this.BACKGROUND_IMAGE); // Not needed
         this.scoreTextObject = this.add.text(0, 0, this.score.toString(), { font: '50px Courier', color: '#ffffff' });
         Phaser.Display.Align.In.Center(this.scoreTextObject, this.scoreLabel);
 
-        this.searchLabel = this.add.rectangle(0, 0, 195, 280, 0xffffff);
-        Phaser.Display.Align.In.RightCenter(this.searchLabel, this.BACKGROUND_IMAGE);
+        this.searchLabel = this.matter.add.image(0, 0, this.BACKGROUND_SEARCH).setStatic(true);
+        Phaser.Display.Align.In.TopRight(this.searchLabel, this.BACKGROUND_IMAGE);
 
         this.level.clickableObjects.forEach(clickableObject => {
             try {
                 const { randomX, randomY } = this.getRandomCoordinates();
 
-                // const image = this.physics.add.image(randomX, -100, clickableObject.name || clickableObject.path);
-                const image = this.add.image(randomX, -100, clickableObject.name || clickableObject.path);
-
+                //const image = this.physics.add.image(randomX, -100, clickableObject.name || clickableObject.path);
+                const image = this.matter.add.image(randomX, randomY, clickableObject.name || clickableObject.path, null, { 
+                    chamfer: { radius: [250,250,30,30],
+                    // qualityMin: 100
+                 },
+                    restitution: 0.5, // elasticity
+                    // slop: 1
+                });
                 image.setScale(this.IMAGE_SCALE);
-                image.setOrigin(0, 1); // Set anchor at the left feet, so we can position the monsters on the shelves
+                // image.setOrigin(0, 0.5); // Set anchor center botom, so we can position the monsters on the shelves
                 image.setAlpha(0); // Hide image so we can show it with the animation tween
-                // image.setBounce(.1);
-                // image.setCollideWorldBounds(true);
+                image.setBounce(0);
+                //image.setCollideWorldBounds(true);
 
                 this.tweens.add({
                     targets: image,
                     alpha: 1,
-                    y: randomY,
+                    //y: randomY,
                     ease: 'Bounce',
                     delay: Phaser.Math.Between(0, 300),
                     duration: 300,
@@ -196,7 +215,7 @@ export class LevelScene extends AbstractScene {
             .on('pointerdown', (pointer: Phaser.Input.Pointer, objectsClicked: Phaser.GameObjects.GameObject[]) => this.clickedOnObjects(objectsClicked));
 
         // * Now handle scrolling
-        this.cameras.main.setBackgroundColor('0xEBF0F3');
+        //this.cameras.main.setBackgroundColor('0xEBF0F3');
 
         // Set initial object to find
         // This will be updated everytime the user correctly searches for the object
@@ -219,7 +238,7 @@ export class LevelScene extends AbstractScene {
         if (this.level.spawnYAxis) {
             const randomIndex = Phaser.Math.Between(0, this.level.spawnYAxis.length);
             // const randomIndex = Math.floor(Math.random() * this.level.spawnYAxis.length);
-            randomY = this.level.spawnYAxis[randomIndex];
+            // randomY = this.level.spawnYAxis[randomIndex];
         }
 
         return { randomX, randomY };
@@ -234,6 +253,9 @@ export class LevelScene extends AbstractScene {
         }
         this.searchImage = this.add.image(0, 0, this.objectToFind.clickableObject.name || this.objectToFind.clickableObject.path).setScale(this.IMAGE_SCALE);
         Phaser.Display.Align.In.Center(this.searchImage, this.searchLabel);
+
+        // this.searchRect = this.add.rectangle(0, 0, 90, 120, 0xdcdcdc, 0.5);
+        // Phaser.Display.Align.In.Center(this.searchRect, this.searchLabel);
 
         // Pass it to ui
         PhaserSingletonService.findObjectObservable.next(this.objectToFind);

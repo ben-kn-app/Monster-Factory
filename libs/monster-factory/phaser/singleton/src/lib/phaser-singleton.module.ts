@@ -109,6 +109,16 @@ export class PhaserSingletonService {
                     },
                     parent: 'monster-factory-main',
                     scene: [LevelScene, ParticleEffects, GameOver],
+                    physics: {
+                        default: 'matter',
+                        matter: {
+                            debug: true,
+                            enableSleeping: true, // improves performance when objects are not in velocity.
+                            gravity: {
+                                y: 1
+                            }
+                        }
+                    },
                     plugins: {
                         global: [],
                         scene: [],
