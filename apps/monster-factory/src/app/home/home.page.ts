@@ -21,7 +21,7 @@ export class HomePageComponent implements OnInit {
      */
     async ngOnInit() {
         setTimeout(this.init, 500);
-        // this.openModal();
+        this.openModal();
     }
 
     async init() {
