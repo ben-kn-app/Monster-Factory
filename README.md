@@ -1,16 +1,28 @@
-# Instructions
+# Monster Factory
 
-1. Clone this repository
-2. npm install
-3. nx serve monster-factory
+This game is dedicated to my 2 year old son Moos who loves to find and point out little monsters in his books. 
 
-# Play game online:
+The game is currently open-sourced on github and the game can be played online on github-pages with the link below.
+
+The game is currently in early release.  The finished version would contain 5-8 levels of toys, animals, .... where monsters are invading and the user (kid) has to spot them and remove them to save the world!
+
+Any feedback is appreciated, bugs and suggestions can be reported in the github issue section.
+
+​Thank you for taking the time to tryout this game!
+
+# Play the game online:
 https://ben-kn-app.github.io/Monster-Factory/ 
 
 We used the below template to start:
 
 # Trello Board:
 https://trello.com/b/6bKl4N4i/monster-factory 
+
+# Instructions on using this repository
+
+1. Clone this repository
+2. npm install
+3. nx serve monster-factory
 
 # Credits to OpenForge Ionic Monorepo Example
 
@@ -28,7 +40,7 @@ nx g nx-stylelint:configuration --project <projectName>
 
 ## Generate an application
 
-The normal NX command to generate an app is `nx g @nrwl/react:app my-app` ; however, there are some special steps to generate an Ionic App.  These are defined well in [Eric Jeker's post here](https://medium.com/@eric.jeker/how-to-integrate-ionic-in-nrwl-nx-3493fcb7e85e)
+The normal NX command to generate an app is `nx g @nrwl/react:app moster-factory` ; however, there are some special steps to generate an Ionic App.  These are defined well in [Eric Jeker's post here](https://medium.com/@eric.jeker/how-to-integrate-ionic-in-nrwl-nx-3493fcb7e85e)
 
 When using Nx, you can create multiple applications and libraries in the same workspace.
 
@@ -52,21 +64,21 @@ Run `npx nx run monster-factory:serve` for a dev server. Navigate to http://loca
 
 ## Code scaffolding
 
-Run `nx g @nrwl/react:component my-component --project=my-app` to generate a new component.
+Run `nx g @nrwl/react:component my-component --project=moster-factory` to generate a new component.
 
 ## Build
 
-Run `nx build my-app` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+Run `nx build moster-factory` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
 ## Running unit tests
 
-Run `nx test my-app` to execute the unit tests via [Jest](https://jestjs.io).
+Run `nx test moster-factory` to execute the unit tests via [Jest](https://jestjs.io).
 
 Run `nx affected:test` to execute the unit tests affected by a change.
 
 ## Running end-to-end tests
 
-Run `ng e2e my-app` to execute the end-to-end tests via [Cypress](https://www.cypress.io).
+Run `ng e2e moster-factory` to execute the end-to-end tests via [Cypress](https://www.cypress.io).
 
 Run `nx affected:e2e` to execute the end-to-end tests affected by a change.
 
