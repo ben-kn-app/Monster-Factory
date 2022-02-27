@@ -70,6 +70,8 @@ export class LevelScene extends AbstractScene {
         ],
     };
 
+    firstMonster = 'monsterb1.svg';
+
     searchLabel;
     searchRect;
     searchImage: Phaser.GameObjects.Image;
@@ -147,17 +149,12 @@ export class LevelScene extends AbstractScene {
         // this.scoreTextObject = this.add.text(0, 0, this.score.toString(), { font: '50px Courier', color: '#ffffff' });
         // Phaser.Display.Align.In.Center(this.scoreTextObject, this.scoreLabel);
 
-        this.searchLabel = this.matter.add.image(90, 130, this.BACKGROUND_SEARCH, null, {
-            isStatic: true,
-            // render: { sprite: { xOffset: 0.30, yOffset: 0.15 } }
+        await this.showWanted();
 
-        });
-        // Phaser.Display.Align.In.TopLeft(this.searchLabel, this.BACKGROUND_IMAGE);
-
-        this.level.spawnYAxis.forEach((y) => {
+        this.level.spawnYAxis.forEach(y => {
             // this.add.rectangle(0,y,(1280*2),5, 0x66ff66);
-            this.matter.add.rectangle(0,y,(1280*2),1, {
-                isStatic: true
+            this.matter.add.rectangle(0, y, 1280 * 2, 1, {
+                isStatic: true,
             });
         });
 
@@ -166,17 +163,17 @@ export class LevelScene extends AbstractScene {
                 const { randomX, randomY } = this.getRandomCoordinates();
 
                 //const image = this.physics.add.image(randomX, -100, clickableObject.name || clickableObject.path);
-                const image = this.matter.add.image(randomX, randomY, clickableObject.name || clickableObject.path, null, { 
+                const image = this.matter.add.image(randomX, randomY, clickableObject.name || clickableObject.path, null, {
                     // chamfer: { radius: [250,250,30,30],
                     // qualityMin: 100
-                //  },
-                            //  render: { sprite: { xOffset: 0.30, yOffset: 0.15 } },
-                             circleRadius: 200,
+                    //  },
+                    //  render: { sprite: { xOffset: 0.30, yOffset: 0.15 } },
+                    circleRadius: 200,
 
                     restitution: 0.5, // elasticity
                     // slop: 1
                 });
-                
+
                 // image.setOrigin(0, 0.5); // Set anchor center botom, so we can position the monsters on the shelves
                 image.setAlpha(0).setScale(this.IMAGE_SCALE); // Hide image so we can show it with the animation tween
                 image.setBounce(0);
@@ -230,6 +227,42 @@ export class LevelScene extends AbstractScene {
         this.setNewObjectToFind();
     }
 
+    showWanted() {
+        // return new Promise((resolve, reject) => {
+            this.searchLabel = this.matter.add
+                .image(500, 600, this.BACKGROUND_SEARCH, null, {
+                    isStatic: true,
+                    // render: { sprite: { xOffset: -0.50, yOffset: -0.5 } }
+                })
+                .setScale(1);
+            Phaser.Display.Align.In.TopRight(this.searchLabel, this.BACKGROUND_IMAGE);
+
+            // this.tweens.add({
+            //     targets: this.searchLabel,
+            //     scale: 1,
+            //     x: 90,
+            //     y: 130,
+            //     //y: randomY,
+            //     // ease: 'Bounce',
+            //     delay: 500,
+            //     duration: 2400,
+            // });
+
+            // return setTimeout(() => {
+            //     // Bug: As the hitbox doesn't scale in the tween. We remake it.
+            //     this.searchLabel.destroy();
+
+            //     this.searchLabel = this.matter.add
+            //         .image(90, 130, this.BACKGROUND_SEARCH, null, {
+            //             isStatic: true,
+            //             // render: { sprite: { xOffset: -0.50, yOffset: -0.5 } }
+            //         })
+            //         .setScale(1);
+            //     return resolve({});
+            // }, 3001);
+        // });
+    }
+
     /**
      * Get random coordinates to place an object
      */
@@ -260,12 +293,10 @@ export class LevelScene extends AbstractScene {
             if (this.searchImage) {
                 this.searchImage.destroy();
             }
-            this.searchImage = this.add.image(96, 145, this.objectToFind.clickableObject.name || this.objectToFind.clickableObject.path).setScale((this.IMAGE_SCALE*0.8));
-            // Phaser.Display.Align.In.Center(this.searchImage, this.searchLabel);    
+            this.searchImage = this.add.image(96, 145, this.objectToFind.clickableObject.name || this.objectToFind.clickableObject.path).setScale(this.IMAGE_SCALE * 0.8);
+            Phaser.Display.Align.In.Center(this.searchImage, this.searchLabel);
         }, 1000);
 
-
-     
         // this.searchRect = this.add.rectangle(0, 0, 90, 120, 0xdcdcdc, 0.5);
         // Phaser.Display.Align.In.Center(this.searchRect, this.searchLabel);
 

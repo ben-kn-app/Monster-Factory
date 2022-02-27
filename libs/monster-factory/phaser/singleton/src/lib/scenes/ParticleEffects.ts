@@ -46,8 +46,8 @@ export default class ParticleEffects extends Phaser.Scene {
                 blendMode: 'ADD',
             });
 
-            const xVals = [data.fromX, 300, 100, data.toX];
-            const yVals = [data.fromY, 100, 150, data.toY];
+            const xVals = [data.fromX, data.toX - 100, data.toX];
+            const yVals = [data.fromY, data.toY - 50, data.toY];
 
             this.tweens.addCounter({
                 from: 0,
