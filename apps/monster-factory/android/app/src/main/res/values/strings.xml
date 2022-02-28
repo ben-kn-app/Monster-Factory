@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Monster Factory</string>
+    <string name="title_activity_main">Monster Factory</string>
+    <string name="package_name">com.knapp.monster_factory</string>
+    <string name="custom_url_scheme">com.knapp.monster_factory</string>
+</resources>

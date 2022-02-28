@@ -1,0 +1,6 @@
+{
+	"appId": "com.knapp.monster_factory",
+	"appName": "Monster Factory",
+	"webDir": "../../dist/apps/monster-factory",
+	"bundledWebRuntime": false
+}

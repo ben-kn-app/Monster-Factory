@@ -1,13 +1,13 @@
 {
-  "version": 2,
-  "projects": {
-    "monster-factory": "apps/monster-factory",
-    "monster-factory-e2e": "apps/monster-factory-e2e",
-    "monster-factory-ionic-ui-buttons": "libs/monster-factory/ionic/ui-buttons",
-    "monster-factory-ionic-ui-headers": "libs/monster-factory/ionic/ui-headers",
-    "monster-factory-ionic-ui-modals": "libs/monster-factory/ionic/ui-modals",
-    "monster-factory-phaser-singleton": "libs/monster-factory/phaser/singleton",
-    "monster-factory-phaser-ui-modals": "libs/monster-factory/phaser/ui-modals",
-    "data-access-model": "libs/shared/data-access-model"
-  }
+    "version": 2,
+    "projects": {
+        "data-access-model": "libs/shared/data-access-model",
+        "monster-factory": "apps/monster-factory",
+        "monster-factory-e2e": "apps/monster-factory-e2e",
+        "monster-factory-ionic-ui-buttons": "libs/monster-factory/ionic/ui-buttons",
+        "monster-factory-ionic-ui-headers": "libs/monster-factory/ionic/ui-headers",
+        "monster-factory-ionic-ui-modals": "libs/monster-factory/ionic/ui-modals",
+        "monster-factory-phaser-singleton": "libs/monster-factory/phaser/singleton",
+        "monster-factory-phaser-ui-modals": "libs/monster-factory/phaser/ui-modals"
+    }
 }
