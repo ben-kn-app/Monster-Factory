@@ -1,9 +1,3 @@
-@angular/common
-MIT
-
-@angular/forms
-MIT
-
 @ionic/core
 MIT
 Copyright 2015-present Drifty Co.
@@ -31,6 +25,8 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
+monster-factory
+
 phaser
 MIT
 The MIT License (MIT)
@@ -57,7 +53,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 undefined
 
+@angular/common
+MIT
+
 @angular/core
+MIT
+
+@angular/forms
 MIT
 
 @angular/platform-browser
